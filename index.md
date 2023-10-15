@@ -4,9 +4,25 @@ Created: 21.09.23 by Bianca
 
 Updated: 14.10.23 by Bianca
 
-## 1. Coaching documentations
+## Table of contents
+1. [Coaching documentations](#coachings) \
+1.1. [Project coaching (Wolfgang Auer)](#auer) \
+1.2. [Data Management (Peter Reiter)](#peter) \
+1.3. [Advanced data analytics (Sebastian Hegenbart)](#sebastian) \
+1.4. [UI (Walter Ritter)](#walter) \
+1.5. [Web (Daniel Rotter)](#daniel) \
+1.6. [Security (Armin Simma)](#armin) 
+2. [Technical documentation](#technical) 
+3. [Project progress report](#projectprogress) \
+3.1. [Sprint 0](#sprint0) \
+3.2. [Sprint 1](#sprint1) \
+3.3. [Sprint 2](#sprint2) \
+3.4. [Sprint 3](#sprint3) \
+3.5. [Sprint 4](#sprint4) 
 
-### 1.1 Project coaching (Wolfgang Auer)
+## 1. Coaching documentations <a name="coachings"></a>
+
+### 1.1. Project coaching (Wolfgang Auer) <a name="auer"></a>
 ---
 
 **Project idea** (21.09.23)
@@ -31,24 +47,24 @@ Further procedure:
 
 ---
 
-### 1.2. Data management (Peter Reiter)
+### 1.2. Data management (Peter Reiter) <a name="peter"></a>
 
-### 1.3. Advanced data analytics (Sebastian Hegenbart)
+### 1.3. Advanced data analytics (Sebastian Hegenbart) <a name="sebastian"></a>
 
-### 1.4. UI (Walter Ritter)
+### 1.4. UI (Walter Ritter) <a name="walter"></a>
 
-### 1.5. Web (Daniel Rotter)
+### 1.5. Web (Daniel Rotter) <a name="daniel"></a>
 
-### 1.6. Security (Armin Simma)
-
-
-
-## 2. Technical documentation
+### 1.6. Security (Armin Simma) <a name="armin"></a>
 
 
-## 3. Project progress report
 
-### Sprint 0 (14. - 27. September 2023)
+## 2. Technical documentation <a name="technical"></a>
+
+
+## 3. Project progress report <a name="projectprogress"></a>
+
+### 3.1. Sprint 0 (14. - 27. September 2023) <a name="sprint0"></a>
 *Author*: Bianca
 
 *Team*: 
@@ -65,7 +81,7 @@ Additonally, following main use cases were defined:
 
 ---
 
-### Sprint 1 (28. September - 12. Oktober 2023)
+### 3.2 Sprint 1 (28. September - 12. Oktober 2023) <a name="sprint1"></a>
 *Author*: Bianca
 
 *Team*: Application scenarios in form of **user stories** were defined.
@@ -135,7 +151,7 @@ Setup Azure pipeline and local deployment
 
 ---
 
-### Sprint 2 (13. Oktober - 27. Oktober 2023)
+### 3.3 Sprint 2 (13. Oktober - 27. Oktober 2023) <a name="sprint2"></a>
 *Author*: Bianca
 
 **Team**: Define database scheme
@@ -154,6 +170,15 @@ Documentation Github pages, Azure management, time schedule
 
 ---
 
-### Sprint 3 (30. Oktober - 13. November 2023)
+### 3.4. Sprint 3 (30. Oktober - 13. November 2023) <a name="sprint3"></a>
+
+---
+
+
+### 3.5. Sprint 4 () <a name="sprint4"></a>
+
+---
+
+### 3.6. Sprint 5 () <a name="sprint5"></a>
 
 ---
