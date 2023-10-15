@@ -81,7 +81,7 @@ Additonally, following main use cases were defined:
 
 ---
 
-### 3.2 Sprint 1 (28. September - 12. Oktober 2023) <a name="sprint1"></a>
+### 3.2. Sprint 1 (28. September - 12. Oktober 2023) <a name="sprint1"></a>
 *Author*: Bianca
 
 *Team*: Application scenarios in form of **user stories** were defined.
@@ -151,7 +151,7 @@ Setup Azure pipeline and local deployment
 
 ---
 
-### 3.3 Sprint 2 (13. Oktober - 27. Oktober 2023) <a name="sprint2"></a>
+### 3.3. Sprint 2 (13. Oktober - 27. Oktober 2023) <a name="sprint2"></a>
 *Author*: Bianca
 
 **Team**: Define database scheme
