@@ -151,10 +151,10 @@ Setup Azure pipeline and local deployment
 
 ---
 
-### 3.3. Sprint 2 (13. Oktober - 27. Oktober 2023) <a name="sprint2"></a>
+### 3.3. Sprint 2 (13. Oktober - 2. November 2023) <a name="sprint2"></a>
 *Author*: Bianca
 
-**Team**: Define database scheme
+**Team**: Define database scheme, define microservices, system operations and collaborators
 
 **Individual responsibilities**:
 
@@ -162,10 +162,11 @@ Setup Azure pipeline and local deployment
 Define Mbus protocol, test hardware
 
 - *Database* (implemented by Dominik):
-Setup necessary tables
+Familiarize with Timescale, setup necessary tables
 
-- *Organizational stuff* (implemented by Bianca and Felix):
-Documentation Github pages, Azure management, time schedule
+- *Organizational stuff*:
+Documentation GitHub pages, time schedule, setup projects and repositories (implemented by Bianca)
+User stories in Azure, MQTT broker setup, (implemented by Felix)
 
 
 ---
