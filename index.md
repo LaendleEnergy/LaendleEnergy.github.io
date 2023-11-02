@@ -12,7 +12,8 @@ Updated: 14.10.23 by Bianca
 1.4. [UI (Walter Ritter)](#walter) \
 1.5. [Web (Daniel Rotter)](#daniel) \
 1.6. [Security (Armin Simma)](#armin) 
-2. [Technical documentation](#technical) 
+2. [Technical documentation](#technical) \
+2.1 [CI/CD & DevOps](#devops)
 3. [Project progress report](#projectprogress) \
 3.1. [Sprint 0](#sprint0) \
 3.2. [Sprint 1](#sprint1) \
@@ -61,6 +62,35 @@ Further procedure:
 
 ## 2. Technical documentation <a name="technical"></a>
 
+### 2.1 CI/CD & DevOps <a name="devops"></a>
+
+Every Project, which should be deployed for its own, resides on its own Azure
+DevOps Project. Those Azure DevOps Projects are holding at least two
+Repositories. The first Repository holds the Project itself, the second Repository
+holds the deployment definition:
+
+```
+Azure DevOps Projects/
+├─ DataCollector/
+│   ├─ DataCollector/
+│   │   ├─ project files etc.
+│   │   ├─ Dockerfile
+│   │   ├─ azure-pipeline.yaml      -> builds & pushes Dockerimage
+│   ├─ Timescale/
+│   │   ├─ Dockerfile
+│   │   ├─ azure-pipeline.yaml      -> builds & pushes Dockerimage
+│   ├─ DataCollector.deployment/
+│   │   ├─ docker-compose.yaml      -> references Images & defines Deplyoment
+│   │   ├─ azure-pipeline.yaml      -> docker compose up
+```
+
+If one Project builds up of multiple separate Components (eg. Application &
+Database), there are Repositories for every Component. Every Component has its
+own Pipeline, which builds a Dockerimage and pushes that to a Container
+Registry.
+
+The Deplyoment resides in its own Repository. In this way, it is possible to
+have the Deplyomentdefinition under version control aswell.
 
 ## 3. Project progress report <a name="projectprogress"></a>
 
