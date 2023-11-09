@@ -2,7 +2,7 @@
 
 Created: 21.09.23 by Bianca
 
-Updated: 14.10.23 by Bianca
+Updated: 09.11.23 by Bianca
 
 ## Table of contents
 1. [Coaching documentations](#coachings) \
@@ -38,7 +38,7 @@ Further procedure:
 
 **User stories** (12.10.23)
 
-*Proposal*: The original idea was to set sliders on an energy consumption curve to indicate which device was used in a particular curve. Recommended was to do this the other way around, so to first start a device and then record its usage so that the system immediately learns whihc device has which consumption. This procedure is recommended because it might make more sense in terms of usability, but it does not have to be implemented this way.
+*Proposal*: The original idea was to set sliders on an energy consumption curve to indicate which device was used in a particular curve. Recommended was to do this the other way around, so to first start a device and then record its usage so that the system immediately learns which device has which consumption. This procedure is recommended because it might make more sense in terms of usability, but it does not have to be implemented this way.
 
 *Recommended further use cases*:
 - Notes on the energy efficiency of the appliances in question: e.g., "Your hair dryer uses x kWh, which is y kWh more than the average hair dryer needs" or "If you replace this appliance with this appliance, you could save yourself x kWh"
@@ -56,57 +56,61 @@ Further procedure:
 **Paper Prototype** (31.10.2023)
 
 - Button placement guide (?)
-  o Define primary / secondary buttons
-  o "Third" unimportant subordinate buttons only as text links
+  - Define primary / secondary buttons
+  - "Third" unimportant subordinate buttons only as text links
 - Home page:
-  o Information / benefits, what the application does, why you should use the application
-  o Designed as a landing page:
-   Problem description
-   Problem solution
-   1 sentence is sufficient
+  - Information / benefits, what the application does, why you should use the application
+  - Designed as a landing page:
+    - Problem description
+    - Problem solution
+    - 1 sentence is sufficient
 - Registration page:
-  o Password criteria? None defined so far
-  o (Username must be unique) -> Name instead of username. When is the check carried out?
-  o If the user name is used, suggest another user name when clicking on it?
+  - Password criteria? None defined so far
+  - (Username must be unique) -> Name instead of username. When is the check carried out?
+  - If the user name is used, suggest another user name when clicking on it?
 - Electricity tariff selection page:
-  o Step display, where you are in the registration process
-  o Electricity provider dropdown (initially only with vkw)
-  o Introduce a meter number check to see if it already exists
+  - Step display, where you are in the registration process
+  - Electricity provider dropdown (initially only with vkw)
+  - Introduce a meter number check to see if it already exists
 - Home page:
-  o Introduce comparison diagram (how much have I saved / consumed more in comparison)
-  o Pay attention to axis descriptions
-  o Use terminology of target persons
-  o Arrangement of diagrams: Display important diagrams first, e.g. if saving electricity is important, display electricity costs and savings first
-  o Create diagram Process: Define target. Which metrics are available to me for the target. Define exactly what the diagram should show -> Implementation via Gold Query Metrics model.
+  - Introduce comparison diagram (how much have I saved / consumed more in comparison)
+  - Pay attention to axis descriptions
+  - Use terminology of target persons
+  - Arrangement of diagrams: Display important diagrams first, e.g. if saving electricity is important, display electricity costs and savings first
+  - Create diagram Process: Define target. Which metrics are available to me for the target. Define exactly what the diagram should show -> Implementation via Goal Query Metrics model.
 - Labeling page:
-  o Label name: "Assign consumption"
-  o Color the curve / area when selecting the time period so that consumption is easier to see
-  o Revise the time axis- Competition page
-  o Edit button should only be visible to the admin
-  o In the ranking list, write how often you have labeled
-  o Create a button for labeling from the ranking list
-  o Highlight benefit for labeling
-  o Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza 😀"
-  o Rename navigation button: instead of "Comparison" something else, e.g. "Household members ranking", "Reward"?
+   Label name: "Assign consumption"
+   Color the curve / area when selecting the time period so that consumption is easier to see
+  - Revise the time axis- Competition page
+  - Edit button should only be visible to the admin
+  - In the ranking list, write how often you have labeled
+  - Create a button for labeling from the ranking list
+  - Highlight benefit for labeling
+  - Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza 😀"
+  - Rename navigation button: instead of "Comparison" something else, e.g. "Household members ranking", "Reward"?
 - Personal information page
-  o Save highly sensitive data securelyo Mark optional fields
-  o Mark page explicitly as optional implementation
-  o Add an additional password field for repetition
-  o Delete account stands out too much as a subordinate button Perhaps only as a text link with color coding (no red!)o Group data between account, contact and household data On the same or a separate page?- Current members pageo Highlight optional fieldso Rename to household members instead of just memberso Highlight household members and profile difference- Create your own profileo More information Which household have I been invited to Previously known information Highlight benefit againo "Join household" instead of "Create profile" as a button- Devices pageo Overview of appliances directly on the appliance page
+  - Save highly sensitive data securelyo Mark optional fields
+  - Mark page explicitly as optional implementation
+  - Add an additional password field for repetition
+  - Delete account stands out too much as a subordinate button Perhaps only as a text link with color coding (no red!)o Group data between account, contact and household data On the same or a separate page?- Current members pageo Highlight optional fieldso Rename to household members instead of just memberso Highlight household members and profile difference
+- Create your own profile
+  - More information
+    - Which household have I been invited to Previously known information
+    - Highlight benefit againo "Join household" instead of "Create profile" as a button- Devices pageo Overview of appliances directly on the appliance page
 - Energy efficiency diagram
-  o Sell this as a benefit when registering
-  o Display devices with "catch-up requirements" first
-  o Perhaps display several appliances at the same time (e.g. 5 worst performing)
-  o Highlight the difference between appliance category(/type) and appliance label
+  - Sell this as a benefit when registering
+  - Display devices with "catch-up requirements" first
+  - Perhaps display several appliances at the same time (e.g. 5 worst performing)
+  - Highlight the difference between appliance category(/type) and appliance label
 - Electricity saving page
-  o Optional: Suggestions for saving electricity
-  o Possibly place tariff recommendation under consumption, as it is not really part of the "Save electricity" tab
-  o Define whether the focus is on saving electricity or money
-  o Report button placement debatable (because it does not only belong to electricity saving)
-  o Describe what a report is
+  - Optional: Suggestions for saving electricity
+  - Possibly place tariff recommendation under consumption, as it is not really part of the "Save electricity" tab
+  - Define whether the focus is on saving electricity or money
+  - Report button placement debatable (because it does not only belong to electricity saving)
+  - Describe what a report is
 - Electricity consumption page:o Alternating presentation of energy and costs 
-  o Insert tariff recommendation there
-  o Cost diagrams with tariff dropdown
+  - Insert tariff recommendation there
+  - Cost diagrams with tariff dropdown
 ---
 
 ### 1.5. Web (Daniel Rotter) <a name="daniel"></a>
@@ -122,14 +126,16 @@ Further procedure:
 
 *Documentation:*
 - Consideration: Link measurement to the user?
-  o Child consumes so and so much power while playing with toy x
-  o Answer questions such as: how much more electricity does it need if you have 1-3 children?
+  - Child consumes so and so much power while playing with toy x
+  - Answer questions such as: how much more electricity does it need if you have 1-3 children?
 - Data Collector & Data Preparation very closely coupled (Data Preparation always accesses Data Collector), possibly ML service later too
-  o Data Preparation Service should not always fetch all data from DB -> becomes a lot if you get new data e.g. every 5 seconds
-  o Suggestion: merge (if synchronous) or use CQRS (asynchronous, create new view)  Advantage of CQRS: if Data Collector is down, something can still be displayed)
-  o Data Preparation Service should aggregate data immediately  Note: See what Timescale can do, not in the frontend (use hypertables)
-  o E.g. also precalculate data for the predefined time periods (annual, monthly, weekly, daily)
-  o Build exactly the views for the specified use cases
+  - Data Preparation Service should not always fetch all data from DB -> becomes a lot if you get new data e.g. every 5 seconds
+  - Suggestion: merge (if synchronous) or use CQRS (asynchronous, create new view) 
+    - Advantage of CQRS: if Data Collector is down, something can still be displayed
+  - Data Preparation Service should aggregate data immediately
+    - Note: See what Timescale can do, not in the frontend (use hypertables)
+  - E.g. also precalculate data for the predefined time periods (annual, monthly, weekly, daily)
+  - Build exactly the views for the specified use cases
 - Ideally: each microservice = 1 team
 - Consider performance and availability (possibly perform load test, look at caching layer at timescale)
 - Data Preparation to Data Collector: Work with events (if you separate them at all; see what Timescale can do)
@@ -276,18 +282,30 @@ Setup Azure pipeline and local deployment
 - *Embedded* (implemented by Lucas): 
 Define Mbus protocol, test hardware
 
-- *Database* (implemented by Dominik):
-Familiarize with Timescale, setup necessary tables
+- *Database & Data Analysis* (implemented by Dominik):
+Familiarize with Timescale, setup necessary tables, first exploratorive data analysis on test data
 
-- *Organizational stuff*:
-Documentation GitHub pages, time schedule, setup projects and repositories (implemented by Bianca)
+- *Organizational stuff & MQTT Broker*:
+Documentation GitHub pages, time schedule, setup projects and repositories, adjustment of paper prototype (implemented by Bianca)
 User stories in Azure, MQTT broker setup, (implemented by Felix)
-
 
 ---
 
 ### 3.4. Sprint 3 (03. November - 16. November 2023) <a name="sprint3"></a>
+*Author*: Bianca
 
+**Team**: 
+
+**Individual responsibilities**:
+
+- *Embedded* (implemented by Lucas): 
+Data decoding, Mbus software implementation, error handling of hardware implementation
+
+- *Deployment* (implemented by Felix):
+Deploy simulator, database and the other projects
+
+- *Application FrontEnd* (implemented by Bianca)
+Export of figma style & adjustment for real application
 
 
 ---
