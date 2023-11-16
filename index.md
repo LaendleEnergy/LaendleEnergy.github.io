@@ -52,7 +52,43 @@ Further procedure:
 
 ### 1.2. Data management (Peter Reiter) <a name="peter"></a>
 
+---
+**Data model** (16.11.2023)
+
+*Author*: Dominik
+
+- Separate DeviceId and household
+- SmartMeter as a separate entity (MeterIndividual, instance of a meter)
+  - Theoretically, a household can theoretically have several SmartMeters
+  - SmartMeter type as an attribute (e.g. Kaifa)
+- Measurement is a MeterReading
+  - Can have several property values
+  - Has a unit, date, numerical value
+  - "Original can be left in a first step"
+- Encode address according to ISO 19160-4-2017 Address Standard
+- Add user contact data (email, number, ...)
+- Admin not as a subtype of User but as a role of User
+- Contextual role
+- Revise measurement-label connection
+- Labeling is "sufficient" for our team
+- Look at multi-tenant handling
+-  "Does each household get its own database or a separate schema in a database or does all data end up in one database?"
+-  Look at partitioning at timescale
+
+
 ### 1.3. Advanced data analytics (Sebastian Hegenbart) <a name="sebastian"></a>
+
+---
+**Labeling** (16.11.2023)
+
+*Author*: Bianca
+
+- Concept for simultaneous labeling? Possibly work out over time when what is running
+- Noisy data will be a problem  questionable how much ML is possible in a meaningful way; do not rely on it
+- 2x already started washing machine  Predict from experience how long the machine will run
+- Store 1-n labels for each measured value  probably too inefficient; consider whether only the start and end should be recorded
+- Incorporate the option to edit the data (labels) retrospectively
+
 
 ### 1.4. UI (Walter Ritter) <a name="walter"></a>
 
