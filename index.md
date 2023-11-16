@@ -28,6 +28,8 @@ Updated: 09.11.23 by Bianca
 ---
 **Project idea** (21.09.23)
 
+*Author*: Bianca
+
 Further procedure:
 - Define application scenarios
 - Define requirements
@@ -37,6 +39,8 @@ Further procedure:
 --- 
 
 **User stories** (12.10.23)
+
+*Author*: Bianca
 
 *Proposal*: The original idea was to set sliders on an energy consumption curve to indicate which device was used in a particular curve. Recommended was to do this the other way around, so to first start a device and then record its usage so that the system immediately learns which device has which consumption. This procedure is recommended because it might make more sense in terms of usability, but it does not have to be implemented this way.
 
@@ -54,6 +58,8 @@ Further procedure:
 
 ---
 **Paper Prototype** (31.10.2023)
+
+*Author*: Dominik
 
 - Button placement guide (?)
   - Define primary / secondary buttons
@@ -117,6 +123,8 @@ Further procedure:
 
 ---
 **Microservices** (02.11.2023)
+
+*Author*: Bianca
 
 *Preparation:*
 - Own database for Data Preparation Service?
@@ -294,7 +302,7 @@ User stories in Azure, MQTT broker setup, (implemented by Felix)
 ### 3.4. Sprint 3 (03. November - 16. November 2023) <a name="sprint3"></a>
 *Author*: Bianca
 
-**Team**: 
+**Team**: Smallrye
 
 **Individual responsibilities**:
 
@@ -305,7 +313,7 @@ Data decoding, Mbus software implementation, error handling of hardware implemen
 Deploy simulator, database and the other projects
 
 - *Application FrontEnd* (implemented by Bianca)
-Export of figma style & adjustment for real application
+Export of figma style & adjustment for real application/ UI
 
 
 ---
