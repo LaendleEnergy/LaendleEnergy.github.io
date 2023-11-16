@@ -74,6 +74,18 @@ Further procedure:
 - Look at multi-tenant handling
 -  "Does each household get its own database or a separate schema in a database or does all data end up in one database?"
 -  Look at partitioning at timescale
+- Strategies:
+  - One table and partitioning
+  - Multiple tables within one schema
+- Disadvantage: Cannot be distributed to different computers because they all have one schema
+  - A separate schema with separate tables for each user
+- Disadvantage: Still everything on one database
+  - Each user gets their own database
+- Link via foreign data mapper
+- Master databases
+- Labels without a time period "don't hurt"
+- Describe in the documentation what is meant by the individual entity types
+- Check what kind of model this is
 
 
 ### 1.3. Advanced data analytics (Sebastian Hegenbart) <a name="sebastian"></a>
