@@ -239,6 +239,7 @@ Registry.
 The Deplyoment resides in its own Repository. In this way, it is possible to
 have the Deplyomentdefinition under version control aswell.
 
+
 ## 3. Project progress report <a name="projectprogress"></a>
 
 ### 3.1. Sprint 0 (14. - 27. September 2023) <a name="sprint0"></a>
@@ -350,7 +351,7 @@ User stories in Azure, MQTT broker setup, (implemented by Felix)
 ### 3.4. Sprint 3 (03. November - 16. November 2023) <a name="sprint3"></a>
 *Author*: Bianca
 
-**Team**: Smallrye
+**Team**: Smallrye mapping
 
 **Individual responsibilities**:
 
@@ -367,7 +368,7 @@ Export of figma style & adjustment for real application/ UI
 ---
 
 
-### 3.5. Sprint 4 () <a name="sprint4"></a>
+### 3.5. Sprint 4 (20. November - 07. December 2023) <a name="sprint4"></a>
 
 ---
 
