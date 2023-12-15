@@ -13,7 +13,8 @@ Updated: 09.11.23 by Bianca
 1.5. [Web (Daniel Rotter)](#daniel) \
 1.6. [Security (Armin Simma)](#armin) 
 2. [Technical documentation](#technical) \
-2.1 [CI/CD & DevOps](#devops)
+2.1 [CI/CD & DevOps](#devops) \
+2.2 [Authentication](#auth)
 3. [Project progress report](#projectprogress) \
 3.1. [Sprint 0](#sprint0) \
 3.2. [Sprint 1](#sprint1) \
@@ -239,6 +240,17 @@ Registry.
 The Deplyoment resides in its own Repository. In this way, it is possible to
 have the Deplyomentdefinition under version control aswell.
 
+### 2.2 Authentication <a name="auth"></a>
+*Author*: Bianca
+
+JWT Bearer Tokens are used to authenticate the end user. The front-end application therefore sends an authentication request to the server when logging in, in which the e-mail address and password are transmitted. The password is transmitted in plain text and hashed on the server side. The password is hashed using "PBKDF2WithHmacSHA512" (PBKDF2: Password-Based Key Derivation Function 2). Specifically, an HMAC is calculated using the SHA512 hash function. A secret is also taken into account in the calculation. 
+
+The system then checks whether a corresponding account with the same access data exists. If so, a token with a validity of 15 minutes is generated, signed with the private key and sent back; this token must then be sent with every request. In the form of claims, this token also contains further information about the currently authenticated user, namely their ID and household ID. The user's role is also included. A distinction is made here between admin and user. The difference between the roles is that the admin can see and manage the household data. In addition, only the admin can add/remove household members or rewards and delete the household. The advantage of this is that the IDs do not have to be provided with every request to the server, but can be transferred directly via the token and read out on the server side. 
+
+Access to all REST methods is controlled via annotations. This specifies which methods are permitted for which roles. In all methods that require authentication, the system first checks whether a JWT token is available and contains the necessary claims. In addition, the e-mail address of the user within the token is compared with the e-mail address from the security context to ensure that the user who is currently logged in is also the user for whom the token was issued. Quarkus verifies the JWT Token automatically, so no manual check is needed for this.
+
+The main problem with bearer tokens is that they can no longer be revoked. Normally, they only become invalid once the specified validity period has expired. 
+Ideally, OpenIDConnect would therefore be used in production, which is based on OAuth2 and can currently be described as the standard for this use case. It could also be used to offer the user the option of logging in via their Google or Facebook account, for which the user would only need to remember one password. But the main advantage is that OpenIDConnect distinguishes between access and refresh token, so the user only has to log in once and one can flexibly handle the period of validity. However, as a separate identity provider would have to be provided for the implementation of OpenIDConnect, the JWT tokens were preferred for this demo project. 
 
 ## 3. Project progress report <a name="projectprogress"></a>
 
@@ -363,7 +375,6 @@ Deploy simulator, database and the other projects
 
 - *Application FrontEnd* (implemented by Bianca)
 Export of figma style & adjustment for real application/ UI
-
 
 ---
 
