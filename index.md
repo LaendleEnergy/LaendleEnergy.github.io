@@ -14,8 +14,9 @@ Updated: 09.11.23 by Bianca
 1.6. [Security (Armin Simma)](#armin) 
 2. [Technical documentation](#technical) \
 2.1 [CI/CD & DevOps](#devops) \
-2.2 [Authentication](#auth)
-3. [Project progress report](#projectprogress) \
+2.2 [Authentication](#auth) \
+2.3 [Embedded Device](#embedded) \
+4. [Project progress report](#projectprogress) \
 3.1. [Sprint 0](#sprint0) \
 3.2. [Sprint 1](#sprint1) \
 3.3. [Sprint 2](#sprint2) \
@@ -252,7 +253,7 @@ Access to all REST methods is controlled via annotations. This specifies which m
 The main problem with bearer tokens is that they can no longer be revoked. Normally, they only become invalid once the specified validity period has expired. 
 Ideally, OpenIDConnect would therefore be used in production, which is based on OAuth2 and can currently be described as the standard for this use case. It could also be used to offer the user the option of logging in via their Google or Facebook account, for which the user would only need to remember one password. But the main advantage is that OpenIDConnect distinguishes between access and refresh token, so the user only has to log in once and one can flexibly handle the period of validity. However, as a separate identity provider would have to be provided for the implementation of OpenIDConnect, the JWT tokens were preferred for this demo project. 
 
-### 2.3 Embedded Device <a name="embdded"></a>
+### 2.3 Embedded Device <a name="embedded"></a>
 *Author*: Lucas
 
 The embedded device builds the bridge between the smartmeter and the server. Its two main functions are reading the smartmeter data and transmitting it to the server. Goals for the embbeded device were for it to be independed of local infrastructure like wifi or external power. 
