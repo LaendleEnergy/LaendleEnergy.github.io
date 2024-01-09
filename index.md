@@ -15,7 +15,7 @@ Updated: 09.11.23 by Bianca
 2. [Technical documentation](#technical) \
 2.1 [CI/CD & DevOps](#devops) \
 2.2 [Authentication](#auth) \
-2.3 [Embedded Device](#embedded) \
+2.3 [Embedded Device](#embedded)
 4. [Project progress report](#projectprogress) \
 3.1. [Sprint 0](#sprint0) \
 3.2. [Sprint 1](#sprint1) \
