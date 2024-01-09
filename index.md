@@ -205,7 +205,21 @@ Further procedure:
 ---
 
 ### 1.6. Security (Armin Simma) <a name="armin"></a>
+*Author*: Lucas
+*Preparation:*
+- Embedded:
+  - Password generation
+  - transmit password from embedded device to server
+  - authentication  
 
+*Documentation:*
+- Embedded:
+  - Patrick: password generation on embedded device -> password and id get readout in production teststage and saved to server
+  - Patrick: Use own implementation instead of mqtts (to much overhead)
+    - own challenge-response implementation ontop of udp
+  - Authentication state befor coaching:
+    - sessionkey derived using aes-gcm to encrypt the challenge with the client key
+  - Armin: use hmac for sessionkey derivation
 
 
 ## 2. Technical documentation <a name="technical"></a>
@@ -329,6 +343,7 @@ The design is fairly simple containing only 3 major components:
   - Level Shifter: TXB0104
 
 ![Schematic](/images/Schematic.png) *Figure 6: Schematic*
+
 ![Layout](/images/Layout.png) *Figure 7: Layout*
 
 
