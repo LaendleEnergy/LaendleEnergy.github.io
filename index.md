@@ -252,6 +252,85 @@ Access to all REST methods is controlled via annotations. This specifies which m
 The main problem with bearer tokens is that they can no longer be revoked. Normally, they only become invalid once the specified validity period has expired. 
 Ideally, OpenIDConnect would therefore be used in production, which is based on OAuth2 and can currently be described as the standard for this use case. It could also be used to offer the user the option of logging in via their Google or Facebook account, for which the user would only need to remember one password. But the main advantage is that OpenIDConnect distinguishes between access and refresh token, so the user only has to log in once and one can flexibly handle the period of validity. However, as a separate identity provider would have to be provided for the implementation of OpenIDConnect, the JWT tokens were preferred for this demo project. 
 
+### 2.3 Embedded Device <a name="embdded"></a>
+*Author*: Lucas
+
+The embedded device builds the bridge between the smartmeter and the server. Its two main functions are reading the smartmeter data and transmitting it to the server. Goals for the embbeded device were for it to be independed of local infrastructure like wifi or external power. 
+
+#### 2.3.1 MCU <a name="mcu"></a>
+The esp32-c3 was choosen as the main computing unit for the embedded device. The main reason for this is the onboard jtag debugger, its cryptrographic features and the low price. Besides this every other microcontroller could be choosen.
+An USB-C connector is used to interface the jtag debugger and deliver current to the esp.
+
+#### 2.3.2 MBus <a name="mbus"></a>
+The kaifa MA309M smartmeter transmits its data every 5 seconds over and MBus interface. A onsemi NCN5150 is used to translate the signals to 3.3V UART signals with the form 2400Baud, 1 Stopbit and even parity.
+The smartmeter can deliver up to 24mA over the two MBus wires. The NCN5150 utilises an internal 3.3V - 15mA regulator to deliver the current to a mcu. In the early design and prototype stage this voltage source was used to power the esp32-c3 and the nb-iot modem and was connected in parallel to the usb power. 
+This connection lead to repeating errors in the uart transmission. The following image shows the corrupted data in comparission to correct data. 
+
+![MBus Error](/images/MBus_error.jpg) *Figure 1: MBus Uart data error*
+
+The image reveals errors in every few bytes. This has been confirmed through the use of an oscilloscope. Additionally, the analysis indicates a consistent number of flipped bits, suggesting a potential issue with the internal power regulator of the NCN5150. Upon disconnecting the 3.3V voltage supply from the NCN5150, connected to the esp32-c3 and nb-iot modem, the problem was resolved. It is likely that the support capacitor discharged too rapidly, causing the voltage regulator to fail.
+
+The smartmeter data is packed in four layers. The two lowest ones are the mbus hardware and link layer. The link layer is extended by the "source address" and "destination address" bytes. The mbus payload contains a DLMS/Cosem Frame which is split onto two mbus frames. The DLMS/Cosem payload is encryped with AES-GCM using a 16byte key and the title concatinated with the framecounter as the start-vector. The decrypted payload contains the data in the format of a DLMS "Data Notification" Frame. Since there is no documentation for the exact format the data is parsed by scanning for the OBIS codes and reading the following bytes. 
+
+![MBus Data Format](/images/MBus_frame_format.png) *Figure 2: MBus Frame format*
+
+The frame is parsed from the incomping uart data by scanning for the start (0x68) and length bytes and than reading the rest of the frame depending on the value of the length byte. The address byte is allways 0xFF for this smartmeter showing that the frame is a broadcast and doenst requiere a response. The control-information byte can be 00, 01, 10 or 11 and shows if the paylaod is fractured onto multiple frames with a maximum of 4 frames (0x11).
+
+The relevant parts of the DLMS header are the Title, APDU Length field and the Framecounter. The Framecounter and Title are concatinated and form the star-vector for the decryption. The APDU length field give information about the lenght of the encrypted payload. It can be 1, 2 or 3 Bytes long depending on the first byte. is Its value 0x80 or smaller its the paylaod length, is its exactly 0x81 the next byte is used as paylaodf length and if its 0x82 the next two bytes are interpreted as uint16 payload length. 
+
+#### 2.3.3 Power study <a name="power"></a>
+The original goal of for the embedded device was to be completly independed of the local infrastructure. For that it should receive its power over the mbus connections from the smartmeter. As described before the errors occured while powering the esp32-c3 and nb-iot modem from the mbus transceiver. To validate the speculation that the device needs to much current a power study was performed. 
+
+In Figure 3, the power consumption of the embedded device is shown. The supply voltage of 3.3V is turned on around second 1. This initiates the boot process of the ESP32-C3 and the SIM7020E modules. In the time frame of seconds 7-9, the module establishes the mobile network connection. Subsequently, the connection to the server is established, and the authentication takes place. All M-bus messages received up to authentication are then sent to the server. Afterward, the module sends the received M-bus message to the server every 5 seconds. The current is measured using the HMC8015 and read and logged using a Python script. The baseline consumption of the ESP and SIM7020E together is approximately 25mA. Since the M-bus transceiver NCN5150 can only deliver a maximum of 15mA, the ESP32-C3 and SIM7020E must be externally powered. As the average current consumption is around 32mA and an average Li-Ion battery with 2.7Ah lasts only about 84 hours, this option is also ruled out. Theirfor the goal of a completly independent embedded device has failed and it needs to be powered using an external powersupply.
+
+![Embedded Device power study](/images/current_study.png) *Figure 3: Embedded Device power study*
+
+#### 2.3.4 NB-Iot Modul <a name="nb-iot"></a>
+NB-IoT was selected for data transmission between the embedded device and the server. The primary rationale behind this choice is to ensure that the embedded device remains independent of local infrastructure, such as WiFi. NB-IoT, in particular, was chosen for its excellent wall penetration and reception capabilities. Unlike alternatives like LoRa or Zigbee, NB-IoT eliminates the need for a gateway that may not be universally applicable in every household.
+
+The SIMCOM SIM7020E Module was chosen to expedite development, leveraging existing knowledge from previous projects. This module interfaces with the ESP32-C3 using a logic-level shifter for the UART lanes. A custom C driver, utilizing the ESP-IDF, was developed for the SIM7020E module. The driver can be easily migrated to other microcontrollers by modifying the UART and GPIO functions in two specific functions, minimizing the required effort.
+
+The driver initializes the ESP32-C3 UART and attempts to communicate with the modem. If the modem fails to respond, the ESP triggers the power key to reset the module. Upon successful communication, the driver initiates the network connection.
+
+#### 2.3.5 Firmware <a name="firmware"></a>
+
+![Firmware](/images/Embedded_Device_Firmware_Overview.png) *Figure 4: Firmware*
+
+#### 2.3.6 Micro Guard UDP <a name="mgudp"></a>
+Micro Guard UDP is a specifically developed transmission protocol that enables secure data transfer over UDP. It is designed to fully support the three security goals of confidentiality, integrity, and availability while optimizing the amount of data.
+
+Confidentiality is ensured through Challenge-Response authentication of the client to the server. The client sends its ID to the server, and the server responds with a 16-byte random number. The client generates the session key from the random number using HMAC and a private key. Subsequently, the random number and the session key are hashed and sent back to the server. The server also generates the session key and hash in the same way to compare with the client's response. If both values match, the client is authenticated on the server, and the server sends an authentication confirmation to the client. To ensure the confidentiality of this response, it is formed by concatenating it with the authentication status using HMAC and the session key derived from the random number. This process is also used for the server's responses to data frames, with the difference that the frame counter is used instead of the random number.
+
+To ensure data integrity, the data is encrypted using AES_GCM. The counter required for this purpose is used as the frame counter and starts at the random number, increasing by the random number % 100 with each data frame.
+
+Availability is achieved through server responses to each frame. To prevent Deauth attacks, the response is concatenated with the current frame counter, and an HMAC is created with the session key. Messages deviating from the HMAC of a potential server response are discarded by the client.
+
+The security of the protocol relies on the private key generated on the embedded device, which must be securely present on the server and linked to the ID.
+
+To achieve small data sizes, metadata is largely omitted. The only exception is the protocol version, which is used to determine the data format. The hashes Server_Response, during authentication, as well as Data_Response, are each truncated to 4 bytes to reduce the amount of data. Thus, the protocol is well-suited for NB-IoT applications.
+
+![Micro Guard UDP](/images/mgudp.png) *Figure 5: Micro Guard UDP*
+
+The server side is implemented in python ontop of udp sockets. The server contains the client state with the ip, port, client key, id, session key and framecounter. Whenever a udp packet arrives at the server a new thread is started to handle the packet. The client state gets choosen by the ip and port. If a packet with a new ip and port arrives the authentication is started. Packets of unauthenticated clients will be ignored. 
+
+#### 2.3.6 Security <a name="security"></a>
+To ensure the security of the private key stored on the embedded device, it is generated once and stored in the Digital Signature Module of the ESP32-C3. Consequently, the key is not externally accessible, and the session key derivation can be directly executed within the Digital Signature module.
+Due to issues encountered with storing the key in the Digital Signature Module in the current prototype, the key is currently stored in the Non-Volatile Storage (NVS) of the ESP.
+
+#### 2.3.7 Hardware design <a name="hardware"></a>
+The design is fairly simple containing only 3 major components: 
+- MCU: ESP32-C3
+  - USB-C Connector
+  - LDO: AMS1117
+- MBus Trancsceiver: NCN5150
+- NB-IoT Modem: SIM7020E
+  - Micro Sim Adapter: HYC240-SIM06-150
+  - Level Shifter: TXB0104
+
+![Schematic](/images/Schematic.png) *Figure 6: Schematic*
+![Layout](/images/Layout.png) *Figure 7: Layout*
+
+
 ## 3. Project progress report <a name="projectprogress"></a>
 
 ### 3.1. Sprint 0 (14. - 27. September 2023) <a name="sprint0"></a>
@@ -260,9 +339,9 @@ Ideally, OpenIDConnect would therefore be used in production, which is based on 
 *Team*: 
 Defined **target group** (end users) to be private households with very little technical knowledge, which might not have WLAN reception in the meter room (e.g. basement).
 
-For this, we created a proto persona which is displayed in Figure 1.
+For this, we created a proto persona which is displayed in Figure 8.
 
- ![Proto persona](/images/ProtoPersona.png) *Figure 1: Proto Persona*
+ ![Proto persona](/images/ProtoPersona.png) *Figure 8: Proto Persona*
 
 Additonally, following main use cases were defined: 
 - Power consumption monitoring
@@ -330,6 +409,9 @@ Designed embedded device, order necessary components and assemble board prototyp
 - *Test data* (implemented by Lucas):
 Setup test data simulator 
 
+- *MQTT Setup* (implemented by Lucas):
+Setup mqtt broker on server
+
 - *Design of application* (implemented by Bianca): 
 Style guide, paper prototype, blueprint
 
@@ -380,9 +462,22 @@ Export of figma style & adjustment for real application/ UI
 
 
 ### 3.5. Sprint 4 (20. November - 07. December 2023) <a name="sprint4"></a>
+*Author*: Lucas
+- *Embedded* (implemented by Lucas):
+Modem driver implementation, esp-idf mqtt<->modem interface evaluation 
 
 ---
 
 ### 3.6. Sprint 5 () <a name="sprint5"></a>
+*Author*: Lucas
+- *Embedded* (implemented by Lucas):
+Micro Guard UDP implementation on embedded device and server
+
+---
+
+### 3.7. Sprint 6 () <a name="sprint6"></a>
+*Author*: Lucas
+- *Embedded* (implemented by Lucas):
+Technical documentation
 
 ---
