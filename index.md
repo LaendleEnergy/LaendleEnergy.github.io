@@ -22,7 +22,9 @@ Updated: 09.11.23 by Bianca
 3.2. [Sprint 1](#sprint1) \
 3.3. [Sprint 2](#sprint2) \
 3.4. [Sprint 3](#sprint3) \
-3.5. [Sprint 4](#sprint4) 
+3.5. [Sprint 4](#sprint4) \
+3.6. [Sprint 5](#sprint5) \
+3.7. [Sprint 6](#sprint6)
 
 ## 1. Coaching documentations <a name="coachings"></a>
 
@@ -517,7 +519,7 @@ Micro Guard UDP implementation on embedded device and server
 
 ### 3.7. Sprint 6 (22. December 2023 - 9. January 2024) <a name="sprint6"></a>
 *Author*: Dominik, Lucas
-- *Streaming-Infrastructure*
+- *Streaming-Infrastructure*:
 Defining events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
 - *Embedded* (implemented by Lucas):
 Technical documentation
