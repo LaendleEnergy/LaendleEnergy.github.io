@@ -491,7 +491,7 @@ Data decoding, M-Bus software implementation, error handling of hardware impleme
 - *Deployment* (implemented by Felix):
 Deploy simulator, database and the other projects
 
-- *Application FrontEnd* 
+- *Application FrontEnd*:
 Export of figma style & adjustment for real application / UI (implemented by Bianca), implementation of tagging view (implemented by Dominik)
 
 ---
@@ -501,9 +501,9 @@ Export of figma style & adjustment for real application / UI (implemented by Bia
 *Author*: Dominik, Lucas
 - *Embedded* (implemented by Lucas):
 Modem driver implementation, esp-idf mqtt<->modem interface evaluation 
-- *Application BackEnd*
+- *Application BackEnd*:
 Entering test data into productive system, implementation of API for measurements for a given time period, API for grouping and averaging of measurements (implemented by Dominik), implementation of account service (login, editing and saving user, editing and saving household data, deleting account), authentication (jwt token) (implemented by Bianca) and role-based authentication (implemented by Felix)
-- *Application FrontEnd*
+- *Application FrontEnd*:
 Finalizing frontend-backend connection for tagging (implemented by Dominik), implementing frontend for account service  (login, editing and saving user, editing and saving household data, deleting account) (implemented by Bianca)
 
 ---
@@ -515,16 +515,16 @@ Micro Guard UDP implementation on embedded device and server
 
 ---
 
-### 3.7. Sprint 6 () <a name="sprint6"></a>
+### 3.7. Sprint 6 (22. December 2023 - 9. January 2024) <a name="sprint6"></a>
 *Author*: Dominik, Lucas
 - *Streaming-Infrastructure*
 Defining events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
 - *Embedded* (implemented by Lucas):
 Technical documentation
-- *Application BackEnd*
+- *Application BackEnd*:
 Finalizing measurement database view by adjusting data collector repository, implementation of api for accumulated measurements for a given time period and bin number (implemented by Dominik),
 implementation of saving target and form validation, tests for account-management and household-management (implemented by Bianca)
-- *Application FrontEnd*
+- *Application FrontEnd*:
 Implementation of role-based rendering (implemented by Felix), creating of view for saving target and form validation (implemented by Bianca)
 
 ---
