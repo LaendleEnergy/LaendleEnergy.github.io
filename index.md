@@ -15,7 +15,8 @@ Updated: 09.11.23 by Bianca
 2. [Technical documentation](#technical) \
 2.1 [CI/CD & DevOps](#devops) \
 2.2 [Authentication](#auth) \
-2.3 [Embedded Device](#embedded)
+2.3 [Embedded Device](#embedded) \
+2.4 [Testing](#testing)
 4. [Project progress report](#projectprogress) \
 3.1. [Sprint 0](#sprint0) \
 3.2. [Sprint 1](#sprint1) \
@@ -347,6 +348,8 @@ The design is fairly simple containing only 3 major components:
 ![Layout](/images/Layout.png) *Figure 7: Layout*
 
 ### 2.4 Testing <a name="testing"></a>
+*Author*: Bianca
+
 "Householdmanagement" and "Accountmanagement" have been tested using JUnit5. 
 
 #### 2.4.1 Accountmanagement
@@ -372,7 +375,7 @@ Figure 10 illustrates the code coverage achieved by those tests.
 *Team*: 
 Defined **target group** (end users) to be private households with very little technical knowledge, which might not have WLAN reception in the meter room (e.g. basement).
 
-For this, we created a proto persona which is displayed in Figure 8.
+For this, we created a proto persona which is displayed in Figure 12.
 
  ![Proto persona](/images/ProtoPersona.png) *Figure 12: Proto Persona*
 
