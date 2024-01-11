@@ -22,7 +22,9 @@ Updated: 09.11.23 by Bianca
 3.2. [Sprint 1](#sprint1) \
 3.3. [Sprint 2](#sprint2) \
 3.4. [Sprint 3](#sprint3) \
-3.5. [Sprint 4](#sprint4) 
+3.5. [Sprint 4](#sprint4) \
+3.6. [Sprint 5](#sprint5) \
+3.7. [Sprint 6](#sprint6)
 
 ## 1. Coaching documentations <a name="coachings"></a>
 
@@ -206,13 +208,17 @@ Further procedure:
 ---
 
 ### 1.6. Security (Armin Simma) <a name="armin"></a>
-*Author*: Lucas
+*Author*: Lucas, Dominik
+
 *Preparation:*
 - Embedded:
   - Password generation
   - transmit password from embedded device to server
   - authentication  
-
+- JWT Authentication:
+  - What should be the expiring date of the JWT token?
+  - Should the token renew itself automatically?
+  - How should passwords be transmitted from client to server?
 *Documentation:*
 - Embedded:
   - Patrick: password generation on embedded device -> password and id get readout in production teststage and saved to server
@@ -221,7 +227,19 @@ Further procedure:
   - Authentication state befor coaching:
     - sessionkey derived using aes-gcm to encrypt the challenge with the client key
   - Armin: use hmac for sessionkey derivation
-
+- JWT Authentication:
+  - One should have two tokens
+    - Access token:
+      - A short-lived token that is used to make authenticated requests to microservices
+      - It should have a short lifespan 
+    - Refresh token:
+      - A long-lived token that is used to obtain new access tokens when the current access token expires
+      - It typically has a longer lifespan 
+    - Sadly no time left for implementing the two tokens solutions: 
+      - Temporary solution: access tokens are longer valid
+  - Exploring technologies like keycloak, OAuth2, ... for two token solution
+  - Password should only be transmitted by using https
+    - In that case it can be transmitted as   clear text
 
 ## 2. Technical documentation <a name="technical"></a>
 
@@ -248,13 +266,13 @@ Azure DevOps Projects/
 │   │   ├─ azure-pipeline.yaml      -> docker compose up
 ```
 
-If one Project builds up of multiple separate Components (eg. Application &
+If one project builds up of multiple separate Components (eg. Application &
 Database), there are Repositories for every Component. Every Component has its
-own Pipeline, which builds a Dockerimage and pushes that to a Container
+own Pipeline, which builds a docker image and pushes that to a Container
 Registry.
 
-The Deplyoment resides in its own Repository. In this way, it is possible to
-have the Deplyomentdefinition under version control aswell.
+The deployment resides in its own repository. In this way, it is possible to
+have the deployment definition under version control as well.
 
 ### 2.2 Authentication <a name="auth"></a>
 *Author*: Bianca
@@ -479,28 +497,32 @@ User stories in Azure, MQTT broker setup, (implemented by Felix)
 ---
 
 ### 3.4. Sprint 3 (03. November - 16. November 2023) <a name="sprint3"></a>
-*Author*: Bianca
+*Author*: Bianca, Dominik
 
 **Team**: Smallrye mapping
 
 **Individual responsibilities**:
 
 - *Embedded* (implemented by Lucas): 
-Data decoding, Mbus software implementation, error handling of hardware implementation
+Data decoding, M-Bus software implementation, error handling of hardware implementation
 
 - *Deployment* (implemented by Felix):
 Deploy simulator, database and the other projects
 
-- *Application FrontEnd* (implemented by Bianca)
-Export of figma style & adjustment for real application/ UI
+- *Application FrontEnd*:
+Export of figma style & adjustment for real application / UI (implemented by Bianca), implementation of tagging view (implemented by Dominik)
 
 ---
 
 
 ### 3.5. Sprint 4 (20. November - 07. December 2023) <a name="sprint4"></a>
-*Author*: Lucas
+*Author*: Dominik, Lucas
 - *Embedded* (implemented by Lucas):
 Modem driver implementation, esp-idf mqtt<->modem interface evaluation 
+- *Application BackEnd*:
+Entering test data into productive system, implementation of API for measurements for a given time period, API for grouping and averaging of measurements (implemented by Dominik), implementation of account service (login, editing and saving user, editing and saving household data, deleting account), authentication (jwt token) (implemented by Bianca) and role-based authentication (implemented by Felix)
+- *Application FrontEnd*:
+Finalizing frontend-backend connection for tagging (implemented by Dominik), implementing frontend for account service  (login, editing and saving user, editing and saving household data, deleting account) (implemented by Bianca)
 
 ---
 
@@ -511,9 +533,16 @@ Micro Guard UDP implementation on embedded device and server
 
 ---
 
-### 3.7. Sprint 6 () <a name="sprint6"></a>
-*Author*: Lucas
+### 3.7. Sprint 6 (22. December 2023 - 9. January 2024) <a name="sprint6"></a>
+*Author*: Dominik, Lucas
+- *Streaming-Infrastructure*:
+Defining events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
 - *Embedded* (implemented by Lucas):
 Technical documentation
+- *Application BackEnd*:
+Finalizing measurement database view by adjusting data collector repository, implementation of api for accumulated measurements for a given time period and bin number (implemented by Dominik),
+implementation of saving target and form validation, tests for account-management and household-management (implemented by Bianca)
+- *Application FrontEnd*:
+Implementation of role-based rendering (implemented by Felix), creating of view for saving target and form validation (implemented by Bianca)
 
 ---
