@@ -208,13 +208,17 @@ Further procedure:
 ---
 
 ### 1.6. Security (Armin Simma) <a name="armin"></a>
-*Author*: Lucas
+*Author*: Lucas, Dominik
+
 *Preparation:*
 - Embedded:
   - Password generation
   - transmit password from embedded device to server
   - authentication  
-
+- JWT Authentication:
+  - What should be the expiring date of the JWT token?
+  - Should the token renew itself automatically?
+  - How should passwords be transmitted from client to server?
 *Documentation:*
 - Embedded:
   - Patrick: password generation on embedded device -> password and id get readout in production teststage and saved to server
@@ -223,7 +227,19 @@ Further procedure:
   - Authentication state befor coaching:
     - sessionkey derived using aes-gcm to encrypt the challenge with the client key
   - Armin: use hmac for sessionkey derivation
-
+- JWT Authentication:
+  - One should have two tokens
+    - Access token:
+      - A short-lived token that is used to make authenticated requests to microservices
+      - It should have a short lifespan 
+    - Refresh token:
+      - A long-lived token that is used to obtain new access tokens when the current access token expires
+      - It typically has a longer lifespan 
+    - Sadly no time left for implementing the two tokens solutions: 
+      - Temporary solution: access tokens are longer valid
+  - Exploring technologies like keycloak, OAuth2, ... for two token solution
+  - Password should only be transmitted by using https
+    - In that case it can be transmitted as   clear text
 
 ## 2. Technical documentation <a name="technical"></a>
 
