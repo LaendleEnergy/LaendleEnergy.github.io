@@ -458,7 +458,7 @@ Additionally, we defined problem detection and comparison with demographically s
 **Individual responsibilities**:
 
 - *Embedded device* (implemented by Lucas):
-Designed embedded device, order necessary components and assemble board prototype 
+select possible hardware components, create schematic and layout for embedded device, order necessary components and assemble board prototype 
 
 - *Test data* (implemented by Lucas):
 Setup test data simulator 
@@ -485,7 +485,7 @@ Setup Azure pipeline and local deployment
 **Individual responsibilities**:
 
 - *Embedded* (implemented by Lucas): 
-Define Mbus protocol, test hardware
+Define Mbus protocol, test hardware and resolve esp flashing problems
 
 - *Database & Data Analysis* (implemented by Dominik):
 Familiarize with Timescale, setup necessary tables, first exploratorive data analysis on test data
@@ -529,7 +529,7 @@ Finalizing frontend-backend connection for tagging (implemented by Dominik), imp
 ### 3.6. Sprint 5 () <a name="sprint5"></a>
 *Author*: Lucas
 - *Embedded* (implemented by Lucas):
-Micro Guard UDP implementation on embedded device and server
+MicroGuardUDP protocol definition and implementation on embedded device and server
 
 ---
 
@@ -538,7 +538,7 @@ Micro Guard UDP implementation on embedded device and server
 - *Streaming-Infrastructure*:
 Defining events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
 - *Embedded* (implemented by Lucas):
-Technical documentation
+Technical documentation, MicroGuardUDP Client reworked to act as the Simulator with the Test data
 - *Application BackEnd*:
 Finalizing measurement database view by adjusting data collector repository, implementation of api for accumulated measurements for a given time period and bin number (implemented by Dominik),
 implementation of saving target and form validation, tests for account-management and household-management (implemented by Bianca)
