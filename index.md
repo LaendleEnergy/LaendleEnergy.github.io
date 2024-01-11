@@ -361,7 +361,7 @@ In Figure 9 on the other hand, the Jacoco report of the Accountmanagement servic
 ![Jacoco Report - Accountmanagement](/images/jacoco-report_accountmanagement.png) *Figure 9: Jacoco Report - Accountmanagement*
 
 #### 2.4.2 Householdmanagement
-In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 59 tests have been written.
+In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 62 tests have been written.
 ![Testing Report - Householdmanagement](/images/test-summary_householdmanagement.png) *Figure 10: Testing Report - Householdmanagement*
 
 Figure 10 illustrates the code coverage achieved by those tests.
