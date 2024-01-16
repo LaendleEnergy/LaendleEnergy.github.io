@@ -1,9 +1,5 @@
 # LaendleEnergy Documentation
 
-Created: 21.09.23 by Bianca
-
-Updated: 09.11.23 by Bianca
-
 ## Table of contents
 
 1. [Coaching documentations](#coachings) \
@@ -26,6 +22,7 @@ Updated: 09.11.23 by Bianca
    3.5. [Sprint 4](#sprint4) \
    3.6. [Sprint 5](#sprint5) \
    3.7. [Sprint 6](#sprint6)
+4. [Future work](#futurework)
 
 ## 1. Coaching documentations <a name="coachings"></a>
 
@@ -60,6 +57,19 @@ _Recommended further use cases_:
 - Suggestions on when to turn on which devices, like e.g. "PV system brings x electricity right now so it would be reasonable to turn on applicance y now", or turn on washing machine in 3h.
 
 ---
+
+**Submission: Presentation and Documentation** (11.01.24)
+
+_Author_: Bianca
+
+- Document what else could be done in the future (which we didn't have time to do)
+- When presenting: First introduce what it is about before moving on to the technical part (What did we want to do? What did we do?)
+- Concentrate on the essentials
+- Technical quality for the existing should be right
+- Define what is left out and document this as a possible extension
+- Presentation requests:
+  - Overview (What we wanted to do, what has been done, what is missing)
+  - Address each topic area from each coach
 
 ### 1.2. Data management (Peter Reiter) <a name="peter"></a>
 
@@ -518,7 +528,15 @@ _Comparison with demographically similar households_:
 
 _Author_: Bianca
 
-**Team**: Define database scheme, define microservices, system operations and collaborators
+**Team**: Define database scheme, define microservices & systems architecture, system operations and collaborators
+
+Figure 13 shows the architecture we planned to implement for this project. Everything with dashed lines was not planned to implement, but can be seen as a possible extension for this project.
+
+![Architecture](/images/architecture.png) _Figure 13: Architecture_
+
+Following figure 14 shows the database scheme we came up with in this sprint.
+
+![Database scheme](/images/database-scheme.png) _Figure 14: Database scheme_
 
 **Individual responsibilities**:
 
@@ -588,5 +606,25 @@ _Author_: Dominik, Lucas
   implementation of saving target and form validation, tests for account-management and household-management (implemented by Bianca)
 - _Application FrontEnd_:
   Implementation of role-based rendering (implemented by Felix), creating of view for saving target and form validation (implemented by Bianca)
+
+---
+
+### 4. Future work <a name="futurework"></a>
+
+_Author_: Bianca
+
+Due to the limited time, we did not implement every functionality we initially planned. So, following could be considered as **possible extensions** of this project:
+
+- Generate an energy saving report and send it as a PDF file to the interested customer
+- Include more energy suppliers than only VKW
+- Use actual pricing plans of the corresponding supplier instead of hardcoded demo data
+- Train a machine learning model to recommend a pricing plan based on the customers energy consumption
+- Make predictions of energy consumption, e.g. for a month/ year
+
+Also, the applications could be **optimized**. For example, in the account-management service, because of the user and jwt validation, all methods of the controllers have some lines of code which are identical. Authentication in general could be extracted into an API-gateway.
+
+The smartmeter-ui application on the other hand, has yet to be tested. Additionally, there is some code duplication regarding error handling, which could be optimized.
+
+Furthermore, as described in chapter 2.2 Authentication, OpenIDConnect could be implemented.
 
 ---
