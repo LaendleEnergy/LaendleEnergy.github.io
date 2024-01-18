@@ -12,7 +12,7 @@
 2. [Technical documentation](#technical) \
    2.1 [CI/CD & DevOps](#devops) \
    2.2 [Authentication](#auth) \
-   2.3 [Embedded Device](#23-embedded-device) \
+   2.3 [Embedded Device](#embedded) \
    2.4 [Testing](#testing)
 3. [Project progress report](#projectprogress) \
    3.1. [Sprint 0](#sprint0) \
@@ -638,7 +638,7 @@ Three points are missing regarding the embedded device. First of all, a long-ter
 
 The next point is the over-the-air update functionality, which was stated as a requirement at the start. OTA updates are necessary to deploy software updates and critical patches to the devices while they are in the field. Since the OTA update should also be tested, it should be implemented before the tests or the tests need to be repeated afterward. The OTA update could be implemented by adding a file download functionality to the MicroGuardUDP protocol or by using a separate TCP implementation like HTTP. Since the updates should not occur too often, data usage won't be critical. The Espressif framework has a built-in API to exchange the firmware running on the ESP32-C3, making it fairly straightforward to implement this part.
 
-The third and last thing that should be done in the future is a complete redesign of the hardware to use less current. As shown in the chapter [Embedded Device: Power Study](#233-power-study), the average current used by the embedded device is too high to run autonomously. The current usage can probably be greatly reduced by using a modem with an embedded MPU, eliminating the need for the logic level shifter between the ESP32-C3 and the SIM7020E. A reference design using the Adrastea-I modem is shown below. Another change that needs to be made is using the NCN5150 in the QFN20 package. The package used in the current version doesn't support more than 2 Unit Loads, but to get the maximum current of 15mA, 6 Unit loads are needed.
+The third and last thing that should be done in the future is a complete redesign of the hardware to use less current. As shown in the chapter [Embedded Device: Power Study](#power), the average current used by the embedded device is too high to run autonomously. The current usage can probably be greatly reduced by using a modem with an embedded MPU, eliminating the need for the logic level shifter between the ESP32-C3 and the SIM7020E. A reference design using the Adrastea-I modem is shown below. Another change that needs to be made is using the NCN5150 in the QFN20 package. The package used in the current version doesn't support more than 2 Unit Loads, but to get the maximum current of 15mA, 6 Unit loads are needed.
 
 ![Schematic](/images/Schematic_Adrastea.png) _Figure 13: Schematic using the Adrastea Modem_
 
