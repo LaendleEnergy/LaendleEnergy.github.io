@@ -12,7 +12,7 @@
 2. [Technical documentation](#technical) \
    2.1 [CI/CD & DevOps](#devops) \
    2.2 [Authentication](#auth) \
-   2.3 [Embedded Device](#embedded) \
+   2.3 [Embedded Device](#23-embedded-device) \
    2.4 [Testing](#testing)
 3. [Project progress report](#projectprogress) \
    3.1. [Sprint 0](#sprint0) \
@@ -626,5 +626,22 @@ Also, the applications could be **optimized**. For example, in the account-manag
 The smartmeter-ui application on the other hand, has yet to be tested. Additionally, there is some code duplication regarding error handling, which could be optimized.
 
 Furthermore, as described in chapter 2.2 Authentication, OpenIDConnect could be implemented.
+
+
+_Auther_: Lucas
+
+Three points are missing regarding the embedded device. First of all, a long-term function test is required. The embedded device has been tested by transmitting data read from a smart meter for around 10 minutes, during which no data was lost. To validate the entire functionality, the embedded device needs to be tested on a smart meter in a real or realistic household for a more extended period. This way, the successful transmission of all data points and the filter function can be verified. Problems that could occur during the field tests include:
+- Reboot of the embedded device due to unknown runtime issues like buffer overflow, leading to lost data or a complete system shutdown.
+- Loss of network connection and inability to reconnect, resulting in lost data.
+- Overflow of the data storage queue due to too many retransmission tries, leading to lost data.
+- Loss of MicroGuardUDP Server connection, causing data loss.
+
+The next point is the over-the-air update functionality, which was stated as a requirement at the start. OTA updates are necessary to deploy software updates and critical patches to the devices while they are in the field. Since the OTA update should also be tested, it should be implemented before the tests or the tests need to be repeated afterward. The OTA update could be implemented by adding a file download functionality to the MicroGuardUDP protocol or by using a separate TCP implementation like HTTP. Since the updates should not occur too often, data usage won't be critical. The Espressif framework has a built-in API to exchange the firmware running on the ESP32-C3, making it fairly straightforward to implement this part.
+
+The third and last thing that should be done in the future is a complete redesign of the hardware to use less current. As shown in the chapter [Embedded Device: Power Study](#233-power-study), the average current used by the embedded device is too high to run autonomously. The current usage can probably be greatly reduced by using a modem with an embedded MPU, eliminating the need for the logic level shifter between the ESP32-C3 and the SIM7020E. A reference design using the Adrastea-I modem is shown below. Another change that needs to be made is using the NCN5150 in the QFN20 package. The package used in the current version doesn't support more than 2 Unit Loads, but to get the maximum current of 15mA, 6 Unit loads are needed.
+
+![Schematic](/images/Schematic_Adrastea.png) _Figure 13: Schematic using the Adrastea Modem_
+
+![Layout](/images/Layout_Adrastea.png) _Figure 14: Layout using the Adrastea Modem_
 
 ---
