@@ -578,9 +578,9 @@ _Author_: Dominik, Lucas
 - _Embedded_ (implemented by Lucas):
   Modem driver implementation, esp-idf mqtt<->modem interface evaluation
 - _Application BackEnd_:
-  Entering test data into productive system, implementation of API for measurements for a given time period, API for grouping and averaging of measurements (implemented by Dominik), implementation of account service (login, editing and saving user, editing and saving household data, deleting account), authentication (jwt token) (implemented by Bianca) and role-based authentication (implemented by Felix)
+  Entering test data into productive system, implementation of API for measurements for a given time period, API for grouping and averaging of measurements (implemented by Dominik), implementation of account service (login, register new household, retrieving, editing and saving user, retrieving, editing and saving household data, deleting household and user, retrieve/ add/ delete/ edit household member, add email address to household member), complete authentication with jwt tokens (implemented by Bianca)
 - _Application FrontEnd_:
-  Finalizing frontend-backend connection for tagging (implemented by Dominik), implementing frontend for account service (login, editing and saving user, editing and saving household data, deleting account) (implemented by Bianca)
+  Finalizing frontend-backend connection for tagging (implemented by Dominik), implementing frontend for account service (login, register new household, retrieving, editing and saving user, retrieving, editing and saving household data, deleting household and user, retrieve/ add/ delete/ edit household member, add email address to household member, authentication functionality) (implemented by Bianca), role-based view (implemented by Felix)
 
 ---
 
@@ -598,14 +598,14 @@ _Author_: Lucas
 _Author_: Dominik, Lucas
 
 - _Streaming-Infrastructure_:
-  Defining events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
+  Defining AccountUpdated & TaggingCreated events, setting up redis publishing infrastructure, implementation of AccountUpdatedEvent + TaggingCreatedEvent (implemented by Felix, Bianca, Dominik)
 - _Embedded_ (implemented by Lucas):
   Technical documentation, MicroGuardUDP Client reworked to act as the Simulator with the Test data
 - _Application BackEnd_:
   Finalizing measurement database view by adjusting data collector repository, implementation of api for accumulated measurements for a given time period and bin number (implemented by Dominik),
-  implementation of saving target and form validation, tests for account-management and household-management (implemented by Bianca)
+  implementation of retrieving, adding and editing saving target, leaderboard, unit and integration tests for account-management and household-management, OpenAPI definition for account-management and household-management, consumer for TaggingCreatedEvent (implemented by Bianca)
 - _Application FrontEnd_:
-  Implementation of role-based rendering (implemented by Felix), creating of view for saving target and form validation (implemented by Bianca)
+  Implementation of role-based rendering (implemented by Felix), view for retrieving, adding and editing saving target, view for leaderboard, and form validation (implemented by Bianca)
 
 ---
 
@@ -627,10 +627,10 @@ The smartmeter-ui application on the other hand, has yet to be tested. Additiona
 
 Furthermore, as described in chapter 2.2 Authentication, OpenIDConnect could be implemented.
 
-
 _Auther_: Lucas
 
 Three points are missing regarding the embedded device. First of all, a long-term function test is required. The embedded device has been tested by transmitting data read from a smart meter for around 10 minutes, during which no data was lost. To validate the entire functionality, the embedded device needs to be tested on a smart meter in a real or realistic household for a more extended period. This way, the successful transmission of all data points and the filter function can be verified. Problems that could occur during the field tests include:
+
 - Reboot of the embedded device due to unknown runtime issues like buffer overflow, leading to lost data or a complete system shutdown.
 - Loss of network connection and inability to reconnect, resulting in lost data.
 - Overflow of the data storage queue due to too many retransmission tries, leading to lost data.
