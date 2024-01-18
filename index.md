@@ -310,7 +310,9 @@ The smartmeter data is packed in four layers. The two lowest ones are the mbus h
 
 The frame is parsed from the incomping uart data by scanning for the start (0x68) and length bytes and than reading the rest of the frame depending on the value of the length byte. The address byte is allways 0xFF for this smartmeter showing that the frame is a broadcast and doenst requiere a response. The control-information byte can be 00, 01, 10 or 11 and shows if the paylaod is fractured onto multiple frames with a maximum of 4 frames (0x11).
 
-The relevant parts of the DLMS header are the Title, APDU Length field and the Framecounter. The Framecounter and Title are concatinated and form the star-vector for the decryption. The APDU length field give information about the lenght of the encrypted payload. It can be 1, 2 or 3 Bytes long depending on the first byte. is Its value 0x80 or smaller its the paylaod length, is its exactly 0x81 the next byte is used as paylaodf length and if its 0x82 the next two bytes are interpreted as uint16 payload length. 
+The relevant parts of the DLMS header are the Title, APDU Length field and the Framecounter. The Framecounter and Title are concatinated and form the star-vector for the decryption. The APDU length field give information about the lenght of the encrypted payload. It can be 1, 2 or 3 Bytes long depending on the first byte. is Its value 0x80 or smaller its the paylaod length, is its exactly 0x81 the next byte is used as paylaodf length and if its 0x82 the next two bytes are interpreted as uint16 payload length.
+
+![]
 
 #### 2.3.3 Power study <a name="power"></a>
 The original goal of for the embedded device was to be completly independed of the local infrastructure. For that it should receive its power over the mbus connections from the smartmeter. As described before the errors occured while powering the esp32-c3 and nb-iot modem from the mbus transceiver. To validate the speculation that the device needs to much current a power study was performed. 
@@ -478,7 +480,7 @@ Setup Azure pipeline and local deployment
 ---
 
 ### 3.3. Sprint 2 (13. Oktober - 2. November 2023) <a name="sprint2"></a>
-*Author*: Bianca
+*Author*: Bianca, Lucas
 
 **Team**: Define database scheme, define microservices, system operations and collaborators
 
