@@ -417,7 +417,7 @@ In Figure 9 on the other hand, the Jacoco report of the Accountmanagement servic
 
 #### 2.4.2 Householdmanagement
 
-In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 113 tests have been written.
+In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 120 tests have been written.
 ![Testing Report - Householdmanagement](/images/test-summary_householdmanagement.png) _Figure 10: Testing Report - Householdmanagement_
 
 Figure 11 illustrates the code coverage achieved by those tests.
@@ -615,6 +615,10 @@ _Author_: Bianca
 
 Due to the limited time, we did not implement every functionality we initially planned. So, following could be considered as **possible extensions** of this project:
 
+- Enable editing devices
+- Identify most energy efficient devices in comparison to comparable devices of other households (devices-overview page)
+- Calculate energy efficiency of a specific device
+- Show trend of costs for a day/week/month/year (energy-saving page)
 - Generate an energy saving report and send it as a PDF file to the interested customer
 - Include more energy suppliers than only VKW
 - Use actual pricing plans of the corresponding supplier instead of hardcoded demo data
