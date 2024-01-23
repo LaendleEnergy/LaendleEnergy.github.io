@@ -586,10 +586,20 @@ _Author_: Dominik, Lucas
 
 ### 3.6. Sprint 5 () <a name="sprint5"></a>
 
-_Author_: Lucas
+_Author_: Lucas, Felix
 
 - _Embedded_ (implemented by Lucas):
   MicroGuardUDP protocol definition and implementation on embedded device and server
+- *Deployment* (Felix): building Services as Dockerimages in Azure CI Pipeline & pushing them to ghcr.io. Pull images to Docker Host and start them, orchestrated in Docker compose. Triggered by Azure CD Pipeline.
+- *Labelling Data* (Dominik): Measurement data, provided from embedded device and persisted in Database, needs to be labelled by Users according to their energy usage. Measurement Data that belongs to a time period, needs to be annotated with Data about Devicecategory and Devicenames, that ran during that period and caused energy consumption.
+- *Measurement View* (Dominik): Measurements need to be retreived from database and mapped to useable format. Frontend has to fetch that data and present that to user.
+- *Data retrieval from Embedded Device* (Lucas, Dominik): Data needs to be retrieved from MQTT-Broker, mapped to useable format and persisted in Database. Because our embedded device sends data every five seconds but skips if measurement does not differ from previous measurement (save data transfer), our backend needs to auto-fill the missing gaps
+- *Error handling* (Bianca): In case of errors that occur in backend, the frontend needs to stay functional and useable
+- *logout* (Bianca): logged in users need to revoke their login when they want to end their session
+- *verify JWT token* (Bianca): Frontend needs to check the JWT Token for correct signature
+- *create installable PWA* (Bianca): Frontend can be installed as PWA when manifest exists
+- *Incentives* (Bianca): users want to add incentives, so that users can be motivated for labelling data
+- *Responsive Frontend* (Bianca): Frontend needs to be responsive, so it can adapt to different devices and different screensizes
 
 ---
 
