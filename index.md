@@ -423,65 +423,93 @@ In Figure 10 the testing report of the Householdmanagement service is shown. For
 Figure 11 illustrates the code coverage achieved by those tests.
 ![Jacoco Report - Householdmanagement](/images/jacoco-report_householdmanagement.png) _Figure 11: Jacoco Report - Householdmanagement_
 
-#### 2.5 DataCollector: Database First
+### 2.5 DataCollector: Database First
 *Author:* Dominik
+
 To store the data of our different microservices, we used a relational database for each service. Accountmanagement and Householdmanagement use a normal PostgreSQL database to save their data. 
+
 Our DataCollector, on the other hand, is the core-service for storing and transforming our time-series measurement data. As working with time-series data can be complicated and some operations very resource-intensive,  we had very different requirements for the database.
+
 The database should:
   - provide native support for time-series data
   - provide various optimized methods to aggregate time-series data 
   - to work efficiently on searching time-series data
   - not be too different from our other databases
+  - 
 That is why, instead of using a normal PostgreSQL database, we used a specialized time-series database called *TimescaleDB* to fulfill these requirements. TimescaleDB is a relational database that extends PostgreSQL with specialized time-series support. It provides:
   - native time-series support
   - hyper-tables that partition data based on time-data
   - advanced time-series functions
   - (horizontal) scalability
+
 As earlier mentioned, it was a crucial goal to have a performant way of retrieving and storing time-series data. That is why, we focused on a database-first approach when implementing the database for the DataCollector, i.e. we focused on modelling the database model first with performance in mind and only later wrote the code for it.
+
 In the following we will 
   - delve into the database schema
   - explore how we made it better accessible for the application via database views
   - and lastly how trigger functions helped us mapping to map between the database model and the views as well as to handle errors on a database side.
-##### 2.5.1 Database Schema
+#### 2.5.1 Database Schema
 The database schema for the DataCollector looks as following:
+
 *insert image*
+
 - "Measurement" is our key table. It stores the time-series data for various smart meter measurements. Primary key is the reading time alongside the (meter)device_id. It is also a hyper-table with the partition_column "device_id", i.e. we partitioned the time-data alongside our (meter)device_id for a better performance.
 - "Devicecategory" stores the various device categories that we use for labelling measurement data in the tagging table. Primary key is the category_name.
 - "Device stores" the concrete devices inside a household (from the household service). It is used as a sort of individual naming for tagging measurements. Primary key is the device_name as well as the (meter)device_id, i.e. per meter device / household there can only be one device called like that.
 - "Averagepriceperwh" stores the pricing plan associated with a meterDevice (for calculating electricity costs later on). Primary key is the (meter)device_id and start_date (of the pricing plan).
 - "Tag" is our second key table. It stores the tagging information for measurements. It does so by having a reading_timerange in which all measurements from the same (meter)device_id all into. Primary key are the reading_timerange, the device_category_name, the (meter)device_id and the device_name. To prevent having overlapping timeranges, a tag_exclusion_constraint checks if the timeranges for the same primary key overlap. If yes, a new tag cannot be inserted.
-##### 2.5.2 Views
+#### 2.5.2 Views
 As seen above, tag and measurement are not directly referencing themselves. This is because hyper-tables are not allowed to have references on foreign keys. As manually assembling measurements and tags would complicate the application's code a lot, a solution was to use so-called database views.
+
 A database view is a virtual table derived from the data in one or more underlying tables, presenting a specific perspective or subset of the data without storing it physically, often used for simplified or customized data access. It is also possible to define INSTEAD OF triggers on these views (more about that later).
+
 Now, in order to simplify the access to measurements and associated tags, we defined the measurement_w_t (read "with tag") view. It is defined as following:
+
 *definition*
+
 As you can see, for the view we assemble measurements with their associated tags by a join and put these tags into an array aggregate. With that, they seem as one common table to the user (see table).
+
 *table image*
+
 We also defined a view for the tags that map the tsrange to two separate timestamps (easier to read for the backend).
+
 Both the tag view and measurement_w_t view serve as an access point for the backend to the measurement and tag tables. This also means, the measurement and tag tables are not intended for being directly accessed by the backend.
-##### 2.5.3 Trigger Functions and Exception Handling
+#### 2.5.3 Trigger Functions and Exception Handling
 Now, when trying to perform persist or update on the view inside the backend, the database does not inherently know how it can disassemble the view data back into their respective tables. For that we need to define own INSTEAD OF trigger functions that, like the name suggests, are being executed instead of a certain function. 
+
 We implemented these functions on 
+
 - the insert of tag_view 
 - insert and update of the measurement_w_t
+
 There we disassemble the views into their original parts and persist the changes into their respective tables.
+
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
 *exception image*
-##### 2.5.4 Array User Types
+
+#### 2.5.4 Array User Types
+
 As earlier mentioned, we tried to keep the backend free from overcomplicated database as much as possible. Sadly, to this date, Hibernate does not support array types natively, so for mapping the array aggreate inside the measurement_w_t view, we had to use so called UserTypes inside Hibernate.
+
 In Hibernate, a User Type, also known as a custom or user-defined type, is a mechanism that allows you to define and use custom data types in your entity classes. A User Type lets you map a custom Java type to a corresponding column type in the database.
+
 Inside our self-defined TagUserType, we now defined what should happen when we read the tags array aggregate from the database (nullSafeGet) and what should happen when write back to the database (nullSafeSet). Inside these functions we map the data into their respective form for both the database and backend.
 
-#### 2.6 Exploratory Data Analysis
+### 2.6 Exploratory Data Analysis
 *Author:* Dominik
+
 One of our original goals of the project was to explore if we can train useful models from collecting and tagging our measurement data. For that purpose we did two EDAs on our data.
+
 In a first step we analyzed the raw measurement data (provided by lecturer Peter Reiter). Observations made in that EDA were that:
+
 - current lanes and instanteousActivePowerPlusW are highly correlated,
 - voltage does not give us a lot of information,
 - most information can be received from the current and power attributes
 - there is a pattern of peaks throughout the day
 - monthly energy use varies a lot but needs more data to be analyzed
+
 In a second step we had a short session where we were trying out different devices and label the data to these devices. As the experiment was only very short, we only had few data to analyze. Still, we were able to make some observations:
+
 - Current behavior between devices is unique 
 - Some devices have a fluctuating current consumption, while others have constant current consumption
 
