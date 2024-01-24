@@ -24,7 +24,8 @@
    3.4. [Sprint 3](#sprint3) \
    3.5. [Sprint 4](#sprint4) \
    3.6. [Sprint 5](#sprint5) \
-   3.7. [Sprint 6](#sprint6)
+   3.7. [Sprint 6](#sprint6) \
+   3.8. [Sprint 7](#sprint7)
 4. [Future work](#futurework)
 
 ## 1. Coaching documentations <a name="coachings"></a>
@@ -642,15 +643,15 @@ _Comparison with demographically similar households_:
 
 _Author_: Bianca
 
-**Team**: Define database scheme, define microservices & systems architecture, system operations and collaborators
+**Team**: Define database schema, define microservices & systems architecture, system operations and collaborators
 
 Figure 13 shows the architecture we planned to implement for this project. Everything with dashed lines was not planned to implement, but can be seen as a possible extension for this project.
 
 ![Architecture](/images/architecture.png) _Figure 16: Architecture_
 
-Following figure 14 shows the database scheme we came up with in this sprint.
+Following figure 14 shows the database schema we came up with in this sprint.
 
-![Database scheme](/images/database-scheme.png) _Figure 17: Database scheme_
+![Database scheme](/images/database-scheme.png) _Figure 17: Database schema_
 
 **Individual responsibilities**:
 
@@ -658,7 +659,7 @@ Following figure 14 shows the database scheme we came up with in this sprint.
   Define Mbus protocol, test hardware and resolve esp flashing problems
 
 - _Database & Data Analysis_ (implemented by Dominik):
-  Familiarize with Timescale, setup necessary tables, first exploratorive data analysis on test data
+  Familiarize with Timescale, setup necessary tables, first exploratory data analysis on test data
 
 - _Organizational stuff & MQTT Broker_:
   Documentation GitHub pages, time schedule, setup projects and repositories, adjustment of paper prototype (implemented by Bianca)
@@ -729,6 +730,19 @@ _Author_: Dominik, Lucas
   implementation of retrieving, adding and editing saving target, leaderboard, unit and integration tests for account-management and household-management, OpenAPI definition for account-management and household-management, consumer for TaggingCreatedEvent (implemented by Bianca)
 - _Application FrontEnd_:
   Implementation of role-based rendering (implemented by Felix), view for retrieving, adding and editing saving target, view for leaderboard, and form validation (implemented by Bianca)
+
+---
+
+### 3.8. Sprint 7 (12. January 2024 - 24. January 2024) <a name="sprint7"></a>
+
+_Author_: Dominik
+
+-  _Embedded_: implementation of meta key requests (implemented by Lucas)
+- _Application BackEnd_: implementation of device management (create, update, delete) in data collector and household service (implemented by Bianca and Dominik), synchronization of consumer and publisher events (implemented by Bianca and Dominik), refactoring account and household management (implemented by Bianca), refactoring data model for data collector (implemented by Dominik)
+- _Application FrontEnd_: implementation of energy costs view (implemented by Dominik), device management view (implemented by Bianca), energy consumption view (implemented by Felix)
+- _Deployment_ (implemented by Felix): creation of docker network to connect all microservices, reverse proxy (for preventing ui cors problems)
+- _Testing_: tests for device management (implemented by Bianca), application and integration tests for datacollector (implemented by Dominik)
+- _Data Analysis_ (implemented by Dominik): second exploratory data analysis on tagged data
 
 ---
 
