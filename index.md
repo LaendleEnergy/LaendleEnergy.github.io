@@ -408,7 +408,7 @@ _Author_: Bianca
 
 #### 2.4.1 Accountmanagement
 
-Figure 8 shows the testing report of the Accountmanagement service. As we can see, 171 tests have been written for this service.
+Figure 8 shows the testing report of the Accountmanagement service. As we can see, 176 tests have been written for this service.
 
 ![Testing Report - Accountmanagement](/images/test-summary_accountmanagement.png) _Figure 8: Testing Report - Accountmanagement_
 
@@ -417,7 +417,7 @@ In Figure 9 on the other hand, the Jacoco report of the Accountmanagement servic
 
 #### 2.4.2 Householdmanagement
 
-In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 130 tests have been written.
+In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 134 tests have been written.
 ![Testing Report - Householdmanagement](/images/test-summary_householdmanagement.png) _Figure 10: Testing Report - Householdmanagement_
 
 Figure 11 illustrates the code coverage achieved by those tests.
