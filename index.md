@@ -248,7 +248,7 @@ _Preparation:_
   - own challenge-response implementation ontop of udp
   - Authentication state befor coaching:
     - sessionkey derived using aes-gcm to encrypt the challenge with the client key
-  - Armin: use hmac for sessionkey derivation
+  - Use hmac for sessionkey derivation
 - JWT Authentication:
   - One should have two tokens
     - Access token:
