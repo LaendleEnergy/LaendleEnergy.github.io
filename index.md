@@ -351,6 +351,8 @@ In Figure 3, the power consumption of the embedded device is shown. The supply v
 
 ![Embedded Device power study](/images/current_study.png) _Figure 3: Embedded Device power study_
 
+The meter key needed to decode the data received from the smartmeter is read from the flash at the start of the programm. Is the key not available yet because the user has to enter his personal key, an encrypted key request is send to the server. The server will respond with the encrypted key and the meter data can be received and decryped.
+
 #### 2.3.4 NB-Iot Modul <a name="nb-iot"></a>
 
 NB-IoT was selected for data transmission between the embedded device and the server. The primary rationale behind this choice is to ensure that the embedded device remains independent of local infrastructure, such as WiFi. NB-IoT, in particular, was chosen for its excellent wall penetration and reception capabilities. Unlike alternatives like LoRa or Zigbee, NB-IoT eliminates the need for a gateway that may not be universally applicable in every household.
