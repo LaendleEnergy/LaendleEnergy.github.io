@@ -15,7 +15,8 @@
    2.3 [Embedded Device](#embedded) \
    2.4 [Testing](#testing) \
    2.5 [DataCollector: Database First](#datacollector) \
-   2.6 [Exploratory Data Anaylsis](#eda)
+   2.6 [Exploratory Data Anaylsis](#eda) \
+   2.7 [Communication between microservices](#communication)
 3. [Project progress report](#projectprogress) \
    3.1. [Sprint 0](#sprint0) \
    3.2. [Sprint 1](#sprint1) \
@@ -164,7 +165,7 @@ _Author_: Dominik
   - In the ranking list, write how often you have labeled
   - Create a button for labeling from the ranking list
   - Highlight benefit for labeling
-  - Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza 😀"
+  - Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza"
   - Rename navigation button: instead of "Comparison" something else, e.g. "Household members ranking", "Reward"?
 - Personal information page
   - Save highly sensitive data securelyo Mark optional fields
@@ -351,6 +352,8 @@ In Figure 3, the power consumption of the embedded device is shown. The supply v
 
 ![Embedded Device power study](/images/current_study.png) _Figure 3: Embedded Device power study_
 
+The meter key needed to decode the data received from the smartmeter is read from the flash at the start of the programm. Is the key not available yet because the user has to enter his personal key, an encrypted key request is send to the server. The server will respond with the encrypted key and the meter data can be received and decryped.
+
 #### 2.3.4 NB-Iot Modul <a name="nb-iot"></a>
 
 NB-IoT was selected for data transmission between the embedded device and the server. The primary rationale behind this choice is to ensure that the embedded device remains independent of local infrastructure, such as WiFi. NB-IoT, in particular, was chosen for its excellent wall penetration and reception capabilities. Unlike alternatives like LoRa or Zigbee, NB-IoT eliminates the need for a gateway that may not be universally applicable in every household.
@@ -438,9 +441,10 @@ The database should:
 - provide native support for time-series data
 - provide various optimized methods to aggregate time-series data
 - to work efficiently on searching time-series data
-- not be too different from our other databases 
+- not be too different from our other databases
 
 That is why, instead of using a normal PostgreSQL database, we used a specialized time-series database called _TimescaleDB_ to fulfill these requirements. TimescaleDB is a relational database that extends PostgreSQL with specialized time-series support. It provides:
+
 - native time-series support
 - hyper-tables that partition data based on time-data
 - advanced time-series functions
@@ -455,6 +459,7 @@ In the following we will
 - and lastly how trigger functions helped us mapping to map between the database model and the views as well as to handle errors on a database side.
 
 #### 2.5.1 Database Schema
+
 The database schema for the DataCollector looks as following:
 
 ![Database Schema - DataCollector](/images/data_collector_schema.png) _Figure 12: Database Schema - DataCollector_
@@ -494,7 +499,7 @@ There we disassemble the views into their original parts and persist the changes
 
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
 
-![Trigger: Exception Handling for Overlapping TimeRanges](/images/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)_
+![Trigger: Exception Handling for Overlapping TimeRanges](/images/trigger_exception_handling.png) \_Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)
 
 #### 2.5.4 Array User Types
 
@@ -520,8 +525,17 @@ In a first step we analyzed the raw measurement data (provided by lecturer Peter
 
 In a second step we had a short session where we were trying out different devices and label the data to these devices. As the experiment was only very short, we only had few data to analyze. Still, we were able to make some observations:
 
-- current behavior between devices is unique 
+- current behavior between devices is unique
 - some devices have a fluctuating current consumption, while others have constant current consumption
+
+### 2.7 Communication between microservices <a name="communication"></a>
+
+_Author_: Bianca
+
+The Frontend communicates directly with the Backend by sending requests to REST interface. The Backend microservices on the other hand communicate by events using a Publish-Subscribe approach. So, a microservice can publish events on a specific topic and every microservice which is interested in this topic subscribes it. For publishing and subscribing events, we used Redis Streams.
+The consumer of the event then handles the event by e.g. making changes and saving relevant data in its own database.
+
+So, for example, if a household member is edited, the Account-Management publishes an event containing relevant data, e.g. id of the household the member belongs to, id of the member itself as well as the edited data of the member which is relevant for the Household-Management service. The Household-Management on the other hand consumes this event, retrieves the corresponding household and edits the member according to the data in the event. It then saves the updated member and now has its own representation of the member, which is in sync with the original representation which resides in the Account-Management service.
 
 ## 3. Project progress report <a name="projectprogress"></a>
 
