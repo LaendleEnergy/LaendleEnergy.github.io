@@ -494,7 +494,7 @@ There we disassemble the views into their original parts and persist the changes
 
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
 
-![Trigger: Exception Handling for Overlapping TimeRanges](/images/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)
+![Trigger: Exception Handling for Overlapping TimeRanges](/images/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)_
 
 #### 2.5.4 Array User Types
 
