@@ -243,7 +243,9 @@ _Preparation:_
   - What should be the expiring date of the JWT token?
   - Should the token renew itself automatically?
   - How should passwords be transmitted from client to server?
-    _Documentation:_
+
+_Documentation:_
+
 - Embedded:
   - own challenge-response implementation ontop of udp
   - Authentication state befor coaching:
