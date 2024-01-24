@@ -451,7 +451,7 @@ In the following we will
 #### 2.5.1 Database Schema
 The database schema for the DataCollector looks as following:
 
-*insert image*
+![Database Schema - DataCollector](/image/data_collector_schema.png) _Figure 12: Database Schema - DataCollector_
 
 - "Measurement" is our key table. It stores the time-series data for various smart meter measurements. Primary key is the reading time alongside the (meter)device_id. It is also a hyper-table with the partition_column "device_id", i.e. we partitioned the time-data alongside our (meter)device_id for a better performance.
 - "Devicecategory" stores the various device categories that we use for labelling measurement data in the tagging table. Primary key is the category_name.
@@ -463,13 +463,11 @@ As seen above, tag and measurement are not directly referencing themselves. This
 
 A database view is a virtual table derived from the data in one or more underlying tables, presenting a specific perspective or subset of the data without storing it physically, often used for simplified or customized data access. It is also possible to define INSTEAD OF triggers on these views (more about that later).
 
-Now, in order to simplify the access to measurements and associated tags, we defined the measurement_w_t (read "with tag") view. It is defined as following:
+Now, in order to simplify the access to measurements and associated tags, we defined the measurement_w_t (read "with tag") view. It is defined as following (see figure 13):
 
-*definition*
+![Measurement View Definition](/image/measurement_w_t_view_deifnition.png) _Figure 13: measurement_w_t View Definition_
 
-As you can see, for the view we assemble measurements with their associated tags by a join and put these tags into an array aggregate. With that, they seem as one common table to the user (see table).
-
-*table image*
+As you can see, for the view we assemble measurements with their associated tags by a join and put these tags into an array aggregate. With that, they seem as one common table to the user.
 
 We also defined a view for the tags that map the tsrange to two separate timestamps (easier to read for the backend).
 
@@ -485,7 +483,8 @@ We implemented these functions on
 There we disassemble the views into their original parts and persist the changes into their respective tables.
 
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
-*exception image*
+
+![Trigger: Exception Handling for Overlapping TimeRanges](/image/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)
 
 #### 2.5.4 Array User Types
 
@@ -510,8 +509,8 @@ In a first step we analyzed the raw measurement data (provided by lecturer Peter
 
 In a second step we had a short session where we were trying out different devices and label the data to these devices. As the experiment was only very short, we only had few data to analyze. Still, we were able to make some observations:
 
-- Current behavior between devices is unique 
-- Some devices have a fluctuating current consumption, while others have constant current consumption
+- current behavior between devices is unique 
+- some devices have a fluctuating current consumption, while others have constant current consumption
 
 ## 3. Project progress report <a name="projectprogress"></a>
 
@@ -522,9 +521,9 @@ _Author_: Bianca
 _Team_:
 Defined **target group** (end users) to be private households with very little technical knowledge, which might not have WLAN reception in the meter room (e.g. basement).
 
-For this, we created a proto persona which is displayed in Figure 12.
+For this, we created a proto persona which is displayed in Figure 15.
 
-![Proto persona](/images/ProtoPersona.png) _Figure 12: Proto Persona_
+![Proto persona](/images/ProtoPersona.png) _Figure 15: Proto Persona_
 
 Additonally, following main use cases were defined:
 
@@ -622,11 +621,11 @@ _Author_: Bianca
 
 Figure 13 shows the architecture we planned to implement for this project. Everything with dashed lines was not planned to implement, but can be seen as a possible extension for this project.
 
-![Architecture](/images/architecture.png) _Figure 13: Architecture_
+![Architecture](/images/architecture.png) _Figure 16: Architecture_
 
 Following figure 14 shows the database scheme we came up with in this sprint.
 
-![Database scheme](/images/database-scheme.png) _Figure 14: Database scheme_
+![Database scheme](/images/database-scheme.png) _Figure 17: Database scheme_
 
 **Individual responsibilities**:
 
