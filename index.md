@@ -165,7 +165,7 @@ _Author_: Dominik
   - In the ranking list, write how often you have labeled
   - Create a button for labeling from the ranking list
   - Highlight benefit for labeling
-  - Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza 😀"
+  - Overview dialog for the missing first place such as "Hey Walter, assign 5 more labels to get the pizza"
   - Rename navigation button: instead of "Comparison" something else, e.g. "Household members ranking", "Reward"?
 - Personal information page
   - Save highly sensitive data securelyo Mark optional fields
@@ -532,8 +532,8 @@ In a second step we had a short session where we were trying out different devic
 
 _Author_: Bianca
 
-The Frontend communicates directly with the Backend by sending requests to REST interface. The Backend microservices on the other hand communicate by events using a Publish-Subscribe approach. So, each microservice can publish events on a specific topic and every microservice which is interested in this topic subscribes it. For publishing and subscribing events, we used Redis Streams.
-The consumer of the event then handles the event by e.g. making changes and saving relevant data in its own data representation.
+The Frontend communicates directly with the Backend by sending requests to REST interface. The Backend microservices on the other hand communicate by events using a Publish-Subscribe approach. So, a microservice can publish events on a specific topic and every microservice which is interested in this topic subscribes it. For publishing and subscribing events, we used Redis Streams.
+The consumer of the event then handles the event by e.g. making changes and saving relevant data in its own database.
 
 So, for example, if a household member is edited, the Account-Management publishes an event containing relevant data, e.g. id of the household the member belongs to, id of the member itself as well as the edited data of the member which is relevant for the Household-Management service. The Household-Management on the other hand consumes this event, retrieves the corresponding household and edits the member according to the data in the event. It then saves the updated member and now has its own representation of the member, which is in sync with the original representation which resides in the Account-Management service.
 
