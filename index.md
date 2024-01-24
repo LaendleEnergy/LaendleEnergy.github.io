@@ -425,7 +425,7 @@ In Figure 10 the testing report of the Householdmanagement service is shown. For
 Figure 11 illustrates the code coverage achieved by those tests.
 ![Jacoco Report - Householdmanagement](/images/jacoco-report_householdmanagement.png) _Figure 11: Jacoco Report - Householdmanagement_
 
-### 2.5 DataCollector: Database First
+### 2.5 DataCollector: Database First <a name="datacollector"></a>
 
 _Author:_ Dominik
 
@@ -457,7 +457,7 @@ In the following we will
 #### 2.5.1 Database Schema
 The database schema for the DataCollector looks as following:
 
-![Database Schema - DataCollector](/image/data_collector_schema.png) _Figure 12: Database Schema - DataCollector_
+![Database Schema - DataCollector](/images/data_collector_schema.png) _Figure 12: Database Schema - DataCollector_
 
 - "Measurement" is our key table. It stores the time-series data for various smart meter measurements. Primary key is the reading time alongside the (meter)device_id. It is also a hyper-table with the partition_column "device_id", i.e. we partitioned the time-data alongside our (meter)device_id for a better performance.
 - "Devicecategory" stores the various device categories that we use for labelling measurement data in the tagging table. Primary key is the category_name.
@@ -473,7 +473,7 @@ A database view is a virtual table derived from the data in one or more underlyi
 
 Now, in order to simplify the access to measurements and associated tags, we defined the measurement_w_t (read "with tag") view. It is defined as following (see figure 13):
 
-![Measurement View Definition](/image/measurement_w_t_view_deifnition.png) _Figure 13: measurement_w_t View Definition_
+![Measurement View Definition](/images/measurement_w_t_view_deifnition.png) _Figure 13: measurement_w_t View Definition_
 
 As you can see, for the view we assemble measurements with their associated tags by a join and put these tags into an array aggregate. With that, they seem as one common table to the user.
 
@@ -493,7 +493,8 @@ We implemented these functions on
 There we disassemble the views into their original parts and persist the changes into their respective tables.
 
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
-*exception image*
+
+![Trigger: Exception Handling for Overlapping TimeRanges](/image/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)
 
 #### 2.5.4 Array User Types
 
@@ -503,7 +504,7 @@ In Hibernate, a User Type, also known as a custom or user-defined type, is a mec
 
 Inside our self-defined TagUserType, we now defined what should happen when we read the tags array aggregate from the database (nullSafeGet) and what should happen when write back to the database (nullSafeSet). Inside these functions we map the data into their respective form for both the database and backend.
 
-### 2.6 Exploratory Data Analysis
+### 2.6 Exploratory Data Analysis <a name="eda"></a>
 
 _Author:_ Dominik
 
