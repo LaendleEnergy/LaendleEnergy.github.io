@@ -8,7 +8,8 @@
    1.3. [Advanced data analytics (Sebastian Hegenbart)](#sebastian) \
    1.4. [UI (Walter Ritter)](#walter) \
    1.5. [Web (Daniel Rotter)](#daniel) \
-   1.6. [Security (Armin Simma)](#armin)
+   1.6. [Security (Armin Simma)](#armin) \
+   1.7. [Embedded (Patrick Ritschel)](#patrick)
 2. [Technical documentation](#technical) \
    2.1 [CI/CD & DevOps](#devops) \
    2.2 [Authentication](#auth) \
@@ -239,22 +240,18 @@ _Author_: Lucas, Dominik
 
 _Preparation:_
 
-- Embedded:
-  - Password generation
-  - transmit password from embedded device to server
-  - authentication
 - JWT Authentication:
   - What should be the expiring date of the JWT token?
   - Should the token renew itself automatically?
   - How should passwords be transmitted from client to server?
-    _Documentation:_
+
+_Documentation:_
+
 - Embedded:
-  - Patrick: password generation on embedded device -> password and id get readout in production teststage and saved to server
-  - Patrick: Use own implementation instead of mqtts (to much overhead)
-    - own challenge-response implementation ontop of udp
+  - own challenge-response implementation ontop of udp
   - Authentication state befor coaching:
     - sessionkey derived using aes-gcm to encrypt the challenge with the client key
-  - Armin: use hmac for sessionkey derivation
+  - Use hmac for sessionkey derivation
 - JWT Authentication:
   - One should have two tokens
     - Access token:
@@ -268,6 +265,19 @@ _Preparation:_
   - Exploring technologies like keycloak, OAuth2, ... for two token solution
   - Password should only be transmitted by using https
     - In that case it can be transmitted as clear text
+
+### 1.7. Embedded (Patrick Ritschel) <a name="patrick"></a>
+
+_Author_: Lucas
+
+- Password generation
+- transmit password from embedded device to server
+- authentication
+- password generation on embedded device -> password and id get readout in production teststage and saved to server
+- Use own implementation instead of mqtts (to much overhead)
+- Own challenge-response implementation ontop of udp
+- Authentication state befor coaching:
+- sessionkey derived using aes-gcm to encrypt the challenge with the client key
 
 ## 2. Technical documentation <a name="technical"></a>
 
