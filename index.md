@@ -13,7 +13,9 @@
    2.1 [CI/CD & DevOps](#devops) \
    2.2 [Authentication](#auth) \
    2.3 [Embedded Device](#embedded) \
-   2.4 [Testing](#testing)
+   2.4 [Testing](#testing) \
+   2.5 [DataCollector: Database First](#datacollector) \
+   2.6 [Exploratory Data Anaylsis](#eda)
 3. [Project progress report](#projectprogress) \
    3.1. [Sprint 0](#sprint0) \
    3.2. [Sprint 1](#sprint1) \
@@ -408,7 +410,7 @@ _Author_: Bianca
 
 #### 2.4.1 Accountmanagement
 
-Figure 8 shows the testing report of the Accountmanagement service. As we can see, 171 tests have been written for this service.
+Figure 8 shows the testing report of the Accountmanagement service. As we can see, 176 tests have been written for this service.
 
 ![Testing Report - Accountmanagement](/images/test-summary_accountmanagement.png) _Figure 8: Testing Report - Accountmanagement_
 
@@ -417,37 +419,41 @@ In Figure 9 on the other hand, the Jacoco report of the Accountmanagement servic
 
 #### 2.4.2 Householdmanagement
 
-In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 130 tests have been written.
+In Figure 10 the testing report of the Householdmanagement service is shown. For this service, 134 tests have been written.
 ![Testing Report - Householdmanagement](/images/test-summary_householdmanagement.png) _Figure 10: Testing Report - Householdmanagement_
 
 Figure 11 illustrates the code coverage achieved by those tests.
 ![Jacoco Report - Householdmanagement](/images/jacoco-report_householdmanagement.png) _Figure 11: Jacoco Report - Householdmanagement_
 
 ### 2.5 DataCollector: Database First
-*Author:* Dominik
 
-To store the data of our different microservices, we used a relational database for each service. Accountmanagement and Householdmanagement use a normal PostgreSQL database to save their data. 
+_Author:_ Dominik
 
-Our DataCollector, on the other hand, is the core-service for storing and transforming our time-series measurement data. As working with time-series data can be complicated and some operations very resource-intensive,  we had very different requirements for the database.
+To store the data of our different microservices, we used a relational database for each service. Accountmanagement and Householdmanagement use a normal PostgreSQL database to save their data.
+
+Our DataCollector, on the other hand, is the core-service for storing and transforming our time-series measurement data. As working with time-series data can be complicated and some operations very resource-intensive, we had very different requirements for the database.
 
 The database should:
-  - provide native support for time-series data
-  - provide various optimized methods to aggregate time-series data 
-  - to work efficiently on searching time-series data
-  - not be too different from our other databases
-  - 
-That is why, instead of using a normal PostgreSQL database, we used a specialized time-series database called *TimescaleDB* to fulfill these requirements. TimescaleDB is a relational database that extends PostgreSQL with specialized time-series support. It provides:
-  - native time-series support
-  - hyper-tables that partition data based on time-data
-  - advanced time-series functions
-  - (horizontal) scalability
+
+- provide native support for time-series data
+- provide various optimized methods to aggregate time-series data
+- to work efficiently on searching time-series data
+- not be too different from our other databases 
+
+That is why, instead of using a normal PostgreSQL database, we used a specialized time-series database called _TimescaleDB_ to fulfill these requirements. TimescaleDB is a relational database that extends PostgreSQL with specialized time-series support. It provides:
+- native time-series support
+- hyper-tables that partition data based on time-data
+- advanced time-series functions
+- (horizontal) scalability
 
 As earlier mentioned, it was a crucial goal to have a performant way of retrieving and storing time-series data. That is why, we focused on a database-first approach when implementing the database for the DataCollector, i.e. we focused on modelling the database model first with performance in mind and only later wrote the code for it.
 
-In the following we will 
-  - delve into the database schema
-  - explore how we made it better accessible for the application via database views
-  - and lastly how trigger functions helped us mapping to map between the database model and the views as well as to handle errors on a database side.
+In the following we will
+
+- delve into the database schema
+- explore how we made it better accessible for the application via database views
+- and lastly how trigger functions helped us mapping to map between the database model and the views as well as to handle errors on a database side.
+
 #### 2.5.1 Database Schema
 The database schema for the DataCollector looks as following:
 
@@ -458,7 +464,9 @@ The database schema for the DataCollector looks as following:
 - "Device stores" the concrete devices inside a household (from the household service). It is used as a sort of individual naming for tagging measurements. Primary key is the device_name as well as the (meter)device_id, i.e. per meter device / household there can only be one device called like that.
 - "Averagepriceperwh" stores the pricing plan associated with a meterDevice (for calculating electricity costs later on). Primary key is the (meter)device_id and start_date (of the pricing plan).
 - "Tag" is our second key table. It stores the tagging information for measurements. It does so by having a reading_timerange in which all measurements from the same (meter)device_id all into. Primary key are the reading_timerange, the device_category_name, the (meter)device_id and the device_name. To prevent having overlapping timeranges, a tag_exclusion_constraint checks if the timeranges for the same primary key overlap. If yes, a new tag cannot be inserted.
+
 #### 2.5.2 Views
+
 As seen above, tag and measurement are not directly referencing themselves. This is because hyper-tables are not allowed to have references on foreign keys. As manually assembling measurements and tags would complicate the application's code a lot, a solution was to use so-called database views.
 
 A database view is a virtual table derived from the data in one or more underlying tables, presenting a specific perspective or subset of the data without storing it physically, often used for simplified or customized data access. It is also possible to define INSTEAD OF triggers on these views (more about that later).
@@ -472,19 +480,20 @@ As you can see, for the view we assemble measurements with their associated tags
 We also defined a view for the tags that map the tsrange to two separate timestamps (easier to read for the backend).
 
 Both the tag view and measurement_w_t view serve as an access point for the backend to the measurement and tag tables. This also means, the measurement and tag tables are not intended for being directly accessed by the backend.
+
 #### 2.5.3 Trigger Functions and Exception Handling
-Now, when trying to perform persist or update on the view inside the backend, the database does not inherently know how it can disassemble the view data back into their respective tables. For that we need to define own INSTEAD OF trigger functions that, like the name suggests, are being executed instead of a certain function. 
 
-We implemented these functions on 
+Now, when trying to perform persist or update on the view inside the backend, the database does not inherently know how it can disassemble the view data back into their respective tables. For that we need to define own INSTEAD OF trigger functions that, like the name suggests, are being executed instead of a certain function.
 
-- the insert of tag_view 
+We implemented these functions on
+
+- the insert of tag_view
 - insert and update of the measurement_w_t
 
 There we disassemble the views into their original parts and persist the changes into their respective tables.
 
 These trigger functions can also help us to lever error handling from the backend into the database system. For example, timescale is very mighty with processing time-series data. As earlier mentioned, we need to check that the reading_timerange of the tags are not overlapping. Now, instead of performing overcomplicated check in the backend, we can make use of our exclusion constraint and catch the error inside the trigger function. Now we can perform a repair step where we "fuse" the overlapping tags (see image...).
-
-![Trigger: Exception Handling for Overlapping TimeRanges](/image/trigger_exception_handling.png) _Figure 14: Example for handling exceptions in a trigger function (for overlapping time ranges)
+*exception image*
 
 #### 2.5.4 Array User Types
 
@@ -495,7 +504,8 @@ In Hibernate, a User Type, also known as a custom or user-defined type, is a mec
 Inside our self-defined TagUserType, we now defined what should happen when we read the tags array aggregate from the database (nullSafeGet) and what should happen when write back to the database (nullSafeSet). Inside these functions we map the data into their respective form for both the database and backend.
 
 ### 2.6 Exploratory Data Analysis
-*Author:* Dominik
+
+_Author:_ Dominik
 
 One of our original goals of the project was to explore if we can train useful models from collecting and tagging our measurement data. For that purpose we did two EDAs on our data.
 
@@ -673,22 +683,21 @@ _Author_: Dominik, Lucas
 
 ---
 
-### 3.6. Sprint 5 () <a name="sprint5"></a>
+### 3.6. Sprint 5 (10. December - 20. December 2023) <a name="sprint5"></a>
 
 _Author_: Lucas, Felix
 
 - _Embedded_ (implemented by Lucas):
   MicroGuardUDP protocol definition and implementation on embedded device and server
-- *Deployment* (Felix): building Services as Dockerimages in Azure CI Pipeline & pushing them to ghcr.io. Pull images to Docker Host and start them, orchestrated in Docker compose. Triggered by Azure CD Pipeline.
-- *Labelling Data* (Dominik): Measurement data, provided from embedded device and persisted in Database, needs to be labelled by Users according to their energy usage. Measurement Data that belongs to a time period, needs to be annotated with Data about Devicecategory and Devicenames, that ran during that period and caused energy consumption.
-- *Measurement View* (Dominik): Measurements need to be retreived from database and mapped to useable format. Frontend has to fetch that data and present that to user.
-- *Data retrieval from Embedded Device* (Lucas, Dominik): Data needs to be retrieved from MQTT-Broker, mapped to useable format and persisted in Database. Because our embedded device sends data every five seconds but skips if measurement does not differ from previous measurement (save data transfer), our backend needs to auto-fill the missing gaps
-- *Error handling* (Bianca): In case of errors that occur in backend, the frontend needs to stay functional and useable
-- *logout* (Bianca): logged in users need to revoke their login when they want to end their session
-- *verify JWT token* (Bianca): Frontend needs to check the JWT Token for correct signature
-- *create installable PWA* (Bianca): Frontend can be installed as PWA when manifest exists
-- *Incentives* (Bianca): users want to add incentives, so that users can be motivated for labelling data
-- *Responsive Frontend* (Bianca): Frontend needs to be responsive, so it can adapt to different devices and different screensizes
+- _Deployment_ (Felix): building Services as Dockerimages in Azure CI Pipeline & pushing them to ghcr.io. Pull images to Docker Host and start them, orchestrated in Docker compose. Triggered by Azure CD Pipeline.
+- _Labelling Data_ (Dominik): Measurement data, provided from embedded device and persisted in Database, needs to be labelled by Users according to their energy usage. Measurement Data that belongs to a time period, needs to be annotated with Data about Devicecategory and Devicenames, that ran during that period and caused energy consumption.
+- _Measurement View_ (Dominik): Measurements need to be retreived from database and mapped to useable format. Frontend has to fetch that data and present that to user.
+- _Data retrieval from Embedded Device_ (Lucas, Dominik): Data needs to be retrieved from MQTT-Broker, mapped to useable format and persisted in Database. Because our embedded device sends data every five seconds but skips if measurement does not differ from previous measurement (save data transfer), our backend needs to auto-fill the missing gaps
+- _Error handling_ (Bianca): In case of errors that occur in backend, the frontend needs to stay functional and useable
+- _logout_ (Bianca): logged in users need to revoke their login when they want to end their session
+- _create installable PWA_ (Bianca): Frontend can be installed as PWA when manifest exists
+- _Incentives_ (Bianca): users want to add and edit incentives, so that users can be motivated for labelling data
+- _Responsive Frontend_ (Bianca): Frontend needs to be responsive, so it can adapt to different devices and different screensizes
 
 ---
 
