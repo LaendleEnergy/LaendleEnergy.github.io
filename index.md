@@ -442,10 +442,10 @@ Figure 11 illustrates the code coverage achieved by those tests.
 #### 2.4.3 DataCollector
 
 In Figure 12 the testing report of the DataCollector service is shown. For this service, 20 tests have been written.
-![Testing Report - Datacollector](/images/test-summary_datacollector.png) _Figure 10: Testing Report - Householdmanagement_
+![Testing Report - Datacollector](/images/test-summary_datacollector.png) _Figure 10: Testing Report - DataCollector_
 
 Figure 13 illustrates the code coverage achieved by those tests.
-![Jacoco Report - Datacollector](/images/jacoco-report_datacollector.png) _Figure 11: Jacoco Report - Householdmanagement_
+![Jacoco Report - Datacollector](/images/jacoco-report_datacollector.png) _Figure 11: Jacoco Report - DataCollector_
 
 ### 2.5 DataCollector: Database First <a name="datacollector"></a>
 
