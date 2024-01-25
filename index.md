@@ -780,7 +780,7 @@ Due to the limited time, we did not implement every functionality we initially p
 - Make predictions of energy consumption, e.g. for a month/ year
 - Implement "forgot password" functionality
 
-Also, the applications could be **optimized**. For example, in the account-management service, because of the user and jwt validation, all methods of the controllers have some lines of code which are identical. Authentication in general could be extracted into an API-gateway. In addition, the household leaderboard has a small error in the order of members, which could only discovered very late and could not be corrected due to time constraints.
+Also, the applications could be **optimized**. For example, in the account-management service, because of the user and jwt validation, all methods of the controllers have some lines of code which are identical. Authentication in general could be extracted into an API-gateway.
 
 The smartmeter-ui application on the other hand, has yet to be tested. Additionally, there is some code duplication regarding error handling, which could be optimized.
 
